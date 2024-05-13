@@ -35,11 +35,6 @@ export const router = createRouter({
       path: '/contatos',
       name: 'contatos',
       component: () => import('../views/contatos.vue')
-    },
-    {
-      path: '/logout',
-      name: 'logout',
-      component: () => import('../views/logout.vue')
     }
   ]
 })
