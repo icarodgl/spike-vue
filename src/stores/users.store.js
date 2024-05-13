@@ -6,6 +6,7 @@ import { useAuthStore } from '@/stores';
 //const baseUrl = `${import.meta.env.API_URL}/usuario`;
 const baseUrl = 'https://demometaway.vps-kinghost.net:8485/api/'
 
+
 export const useUsersStore = defineStore({
     id: 'users',
     state: () => ({
@@ -18,8 +19,9 @@ export const useUsersStore = defineStore({
         },
         async getAll() {
             this.users = { loading: true };
+            const authStore = useAuthStore();
             try {
-                this.users = await fetchWrapper.get(baseUrl);    
+                this.users = await fetchWrapper.get(`${baseUrl}contato/listar/${authStore.user.id}`);    
             } catch (error) {
                 this.users = { error };
             }
