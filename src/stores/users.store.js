@@ -3,14 +3,14 @@ import { defineStore } from 'pinia';
 import { fetchWrapper } from '@/helpers';
 import { useAuthStore } from '@/stores';
 
-//const baseUrl = `${import.meta.env.API_URL}/usuario`;
 const baseUrl = 'https://demometaway.vps-kinghost.net:8485/api/'
 
 
 export const useUsersStore = defineStore({
     id: 'users',
     state: () => ({
-        users: {},
+        users: [],
+        favoritos:[],
         user: {}
     }),
     actions: {
@@ -22,6 +22,44 @@ export const useUsersStore = defineStore({
             const authStore = useAuthStore();
             try {
                 this.users = await fetchWrapper.get(`${baseUrl}contato/listar/${authStore.user.id}`);    
+            } catch (error) {
+                this.users = { error };
+            }
+        },
+        async getfavoritos() {
+            try {
+                this.favoritos = await fetchWrapper.get(`${baseUrl}favorito/pesquisar`);  
+            } catch (error) {
+                this.users = { error };
+            }
+        },
+        async favoritar(user) {
+            try {
+                await fetchWrapper.post(`${baseUrl}favorito/salvar`, user);  
+                await fetchWrapper.delete(`${baseUrl}contato/remover/${user.id}`);  
+            } catch (error) {
+                this.users = { error };
+            }
+        },
+        async desfavoritar(user) {
+            try {
+                await fetchWrapper.post(`${baseUrl}contato/salvar`, user); 
+                await fetchWrapper.delete(`${baseUrl}favorito/remover/${user.id}`); 
+            } catch (error) {
+                this.users = { error };
+            }
+        },
+        async addContato(user) {
+            try {
+                await fetchWrapper.post(`${baseUrl}contato/salvar`, user);  
+            } catch (error) {
+                this.users = { error };
+            }
+  
+        },
+        async removeContato(user) {
+            try {
+                await fetchWrapper.delete(`${baseUrl}contato/remover/${user.id}`);  
             } catch (error) {
                 this.users = { error };
             }
