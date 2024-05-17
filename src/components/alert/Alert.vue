@@ -8,7 +8,7 @@ const { alert } = storeToRefs(alertStore);
 </script>
 
 <template>
-    <div v-if="alert" class="container">
+    <div v-if="alert" class="base">
         <div class="m-3">
             <div class="alert alert-dismissable" :class="alert.type">
                 <button @click="alertStore.clear()" class="btn btn-link close">&times;</button>
@@ -17,3 +17,15 @@ const { alert } = storeToRefs(alertStore);
         </div>
     </div>
 </template>
+
+<style>
+.alert{
+    position: fixed;
+    bottom: 10px;
+    right: 20%;
+    min-width: 300px;
+}
+.base{
+    position: absolute;
+}
+</style>

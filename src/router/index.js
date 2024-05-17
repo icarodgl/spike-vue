@@ -1,24 +1,32 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/home.vue'
 import { useAuthStore, useAlertStore } from '@/stores';
-
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
+      name: '#',
+      component: Home
+    },
+    {
+      path: '/home',
       name: 'home',
       component: Home
     },
-    ,
     {
       path: '/login',
       name: 'login',
       component: () => import('../views/login.vue')
     },
     {
-      path: '/cadastro',
+      path: '/cadastro/',
       name: 'cadastro',
+      component: () => import('../views/cadastro.vue')
+    },
+    {
+      path: '/cadastro/:id',
+      name: 'cadastroId',
       component: () => import('../views/cadastro.vue')
     },
     {
@@ -35,7 +43,8 @@ export const router = createRouter({
       path: '/contatos',
       name: 'contatos',
       component: () => import('../views/contatos.vue')
-    }
+    },
+    { path: '/:pathMatch(.*)*', redirect: '/' }
   ]
 })
 router.beforeEach(async (to) => {
@@ -50,6 +59,8 @@ router.beforeEach(async (to) => {
   if (authRequired && !authStore.user) {
       authStore.returnUrl = to.fullPath;
       return '/login';
+  }if(!authRequired && authStore.user){
+    return false
   }
 });
 export default router
