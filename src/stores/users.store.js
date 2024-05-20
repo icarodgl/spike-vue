@@ -18,8 +18,15 @@ export const usersStore = defineStore({
     isLoading:false
   }),
   actions: {
-    async register(user) {
-      await fetchWrapper.post(`${baseUrl}/salvar`, user);
+    async salvarContato(user) {
+      const alertStore = useAlertStore();
+      try {
+        this.isLoading = true
+        await fetchWrapper.post(`${baseUrl}/contato/salvar`, user);
+      } catch (error) {
+        alertStore.error(this.error);
+      }
+      this.isLoading = false
     },
     getLocalById(id){
       this.user = this.users
@@ -78,6 +85,16 @@ export const usersStore = defineStore({
         await fetchWrapper.post(`${baseUrl}contato/salvar`, user);
         alertStore.success(this.sucesso);
       } catch (error) {
+        alertStore.error(this.error);
+      }
+    },
+    async removeFavorito(user) {
+      const alertStore = useAlertStore();
+      try {
+        await fetchWrapper.delete(`${baseUrl}favorito/remover/${user.id}`);
+        alertStore.success(this.sucesso);
+      } catch (error) {
+        const alertStore = useAlertStore();
         alertStore.error(this.error);
       }
     },
