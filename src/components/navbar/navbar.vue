@@ -5,7 +5,7 @@ const authStore = useAuthStore();
 </script>
 
 <template>
-  <nav>
+  <nav class="main-nav">
     <RouterLink to="/">home</RouterLink>
     <RouterLink to="/cadastro">Meu cadastro</RouterLink>
     <RouterLink to="/usuario">Usuários</RouterLink>
@@ -20,4 +20,9 @@ const authStore = useAuthStore();
 </template>
 
 <style scoped>
+.main-nav{
+  display: flex;
+  justify-content: end;
+  height: 64px;
+}
 </style>
