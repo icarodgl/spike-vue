@@ -1,12 +1,11 @@
 <script setup>
 import { router } from '@/router';
 import { contatoStore } from "@/stores/user.store";
-import { storeToRefs } from "pinia";
 import { usersStore } from "@/stores";
 
 const usersS = usersStore();
 
-defineProps(['user','favorito'])
+const props = defineProps(['user','favorito'])
 
 async function favoritar(user){
   await usersS.favoritar(user)
@@ -31,6 +30,14 @@ async function update(){
     usersS.getAll();
     usersS.getfavoritos() 
 }
+async function remover(user){
+    if (props.favorito){
+       await usersS.removeFavorito(user)
+    }else{
+        await usersS.removeContato(user)
+    }
+    update()
+}
 </script>
 
 <template>
@@ -43,7 +50,8 @@ async function update(){
             <div class="head_actions">
                 <div class="btn_acoes">
                     <i @click="editUser(user)" class="bi bi-pencil-square"></i>
-                    <i @click="usersStore.removeContato(user)" class="bi bi-trash"></i>
+
+                    <i @click="remover(user)" class="bi bi-trash"></i>
 
                     <i v-if="favorito" @click="desfavoritar(user)" class="bi bi-star-fill"></i>
                     <i v-else @click="favoritar(user)" class="bi bi-star"></i>
@@ -54,7 +62,7 @@ async function update(){
                 </div>
             </div>
         </div>
-        <div class="email">email: {{ user.email }}</div>
+        <div v-if="user.email?.length > 0" class="email">email: {{ user.email }}</div>
         <div class="telefone">Telefone: {{ user.telefone }}</div>
         <div class="cpf">CPF: {{ user.pessoa?.cpf }}</div>
     </div>
