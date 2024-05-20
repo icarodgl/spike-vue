@@ -2,45 +2,67 @@
 import { storeToRefs } from "pinia";
 import { usersStore } from "@/stores";
 import { RouterLink } from "vue-router";
-import { useAlertStore } from '@/stores';
-import Card from "./../components/card/card.vue"
+import { useAlertStore } from "@/stores";
+import Card from "./../components/card/card.vue";
 const userStore = usersStore();
-const { favoritos, users, isLoading} = storeToRefs(userStore);
+const { favoritos, users, isLoading } = storeToRefs(userStore);
 
-update()
+update();
 
-async function createAlert(message, type){
+async function createAlert(message, type) {
   const alertStore = useAlertStore();
-  if(type === 'error')
-    alertStore.error(message)
+  if (type === "error") alertStore.error(message);
 }
-async function update(){
+async function update() {
   userStore.getAll();
-  userStore.getfavoritos() 
+  userStore.getfavoritos();
 }
 </script>
 
 <template>
   <main class="container">
-  <h1>Contatos</h1>
-  <router-link to="/cadastro/0" class="btn btn-sm btn-success mb-2"
-    >Add User</router-link
-  >
-  <div class="cards">
-    <Card v-for="user in favoritos" :key="user.id" :user="user" :favorito="true"></Card>
-    <Card v-for="user in users" :key="user.id" :user="user" :favorito="false"></Card>
-  </div>
-</main>
+    <div class="head">
+      <h1>Contatos</h1>
+      <router-link to="/cadastro/0" class="btn btn-sm btn-success mb-2"
+        ><i class="bi bi-plus-circle"></i> Novo contato</router-link
+      >
+    </div>
+
+    <div class="cards">
+      <Card
+        v-for="user in favoritos"
+        :key="user.id"
+        :user="user"
+        :favorito="true"
+      ></Card>
+      <Card
+        v-for="user in users"
+        :key="user.id"
+        :user="user"
+        :favorito="false"
+      ></Card>
+    </div>
+  </main>
 </template>
 
 
 <style scoped>
-.container{
+.btn{
+  height: 34px;
+  margin: 10px 10px 10px 20px;
+}
+.container {
   display: flex;
   flex-direction: column;
 }
-.cards{
+.cards {
   display: flex;
   flex-wrap: wrap;
+  justify-content:center;
+}
+.head{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 </style>
