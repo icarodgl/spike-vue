@@ -52,7 +52,5 @@ async function handleResponse(response) {
         const error = (data && data.message) || response.status;
         return Promise.reject(error);
     }
-
-    console.log(isImage,'>>>', data);
     return data;
 }

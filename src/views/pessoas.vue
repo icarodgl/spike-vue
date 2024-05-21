@@ -77,12 +77,24 @@ function editUser(e) {
 .input-group-text{
   cursor: pointer
 }
-@media (max-width: 600px) {
+h1{
+  position: absolute;
+}
+@media (max-width: 500px) {
   .search{
   width: 300px;
   position: relative;
-  left: 10%;
+  left: 0px;
   top: 8px;
+}
+
+}
+@media (max-width: 800px) {
+  .head{
+    flex-wrap: wrap;
+  }
+h1{
+  position: relative;
 }
 }
 </style>
