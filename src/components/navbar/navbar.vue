@@ -23,6 +23,5 @@ const authStore = useAuthStore();
 .main-nav{
   display: flex;
   justify-content: end;
-  height: 64px;
 }
 </style>

@@ -3,29 +3,24 @@ import { useRoute } from "vue-router";
 import { contatoStore } from "@/stores/user.store";
 import * as Yup from "yup";
 import { Form } from "vee-validate";
-import {usersStore} from "@/stores"
-import FormGroupField from "./../components/forms/form-group-field.vue";
-import FormGroupMasked from "./../components/forms/form-group-masked.vue";
-
-const userStore = usersStore();
+import {pessoasStore} from "@/stores"
+import FormGroupField from "../components/forms/form-group-field.vue";
+import FormGroupMasked from "../components/forms/form-group-masked.vue";
+import SelectItem from "../components/forms/form-group-select.vue"
+const pStore = pessoasStore();
 
 let user = contatoStore.newContato();
 const route = useRoute();
-if (route.params.id > 0) {
-  user = await contatoStore.getContato();
-}
 
 const schema = Yup.object().shape({
   nome: Yup.string().required("campo obrigatório"),
-  email: Yup.string().email().required("campo obrigatório"),
+  email: Yup.string().email().required("Email inválido"),
   tipoContato: Yup.string().required("campo obrigatório"),
-  telefone: Yup.number().required("campo obrigatório"),
-  tag: Yup.string().required("campo obrigatório"),
-  // .min(6, "Password must be at least 6 characters"),
+  telefone: Yup.string().required("campo obrigatório"),
 });
+
 async function onSubmit() {
-  console.log(user);
-  await userStore.salvarContato(user)
+  await pStore.salvarContato(user)
 }
 </script>
 
@@ -41,34 +36,36 @@ async function onSubmit() {
         <FormGroupField
           :errors="errors"
           :dado="user.pessoa.nome"
-          @change="(e) => (user.pessoa.nome = e)"
+          @change="(e) => (user.pessoa.nome = user.usuario.nome = e)"
           :name="'nome'"
         ></FormGroupField>
         <FormGroupField
           :errors="errors"
           :dado="user.email || user.pessoa.email"
-          @change="(e) => (user.pessoa.email = user.email = e)"
+          @change="(e) => (user.pessoa.email = user.usuario.email = user.email = e)"
           :name="'email'"
         ></FormGroupField>
         <FormGroupMasked
           :errors="errors"
           :dado="user.telefone"
-          @change="(e) => (user.telefone = e)"
+          @change="(e) => (user.telefone = user.usuario.telefone = e)"
           :name="'telefone'"
           :mascara="'telefone'"
         ></FormGroupMasked>
-        <FormGroupField
+        <SelectItem
           :errors="errors"
           :dado="user.tipoContato"
+          :options="['TELEFONE','EMAIL','CELULAR']"
           @change="(e) => (user.tipoContato = e)"
           :name="'tipoContato'"
-        ></FormGroupField>
-        <FormGroupField
+        ></SelectItem>
+        <SelectItem
           :errors="errors"
           :dado="user.tag"
+          :options="['PESSOAL','RABALHO']"
           @change="(e) => (user.tag = e)"
           :name="'tag'"
-        ></FormGroupField>
+        ></SelectItem>
       </div>
       <div class="opcional">
         <FormGroupMasked

@@ -5,7 +5,7 @@ import { usersStore } from "@/stores";
 
 const usersS = usersStore();
 
-const props = defineProps(['user','favorito'])
+const props = defineProps(['pessoa','favorito','pushTo'])
 
 async function favoritar(user){
   await usersS.favoritar(user)
@@ -18,12 +18,12 @@ async function desfavoritar(user){
 
 async function editUser(user){
   contatoStore.setContato(user)
-  router.push(`/cadastro/${user.id}`)
+  router.push(`${props.pushTo}/contato/cadastro/${user.id}`)
 }
 
 async function novoContato(){
   contatoStore.newContato()
-  router.push('/cadastro/0')
+  router.push(`${props.pushTo}/contato/cadastro/0`)
 }
 
 async function update(){
@@ -62,7 +62,7 @@ async function remover(user){
                 </div>
             </div>
         </div>
-        <div v-if="user.email?.length > 0" class="email">email: {{ user.email }}</div>
+        <div class="email">email: {{ user.email || user.pessoa.email || user.usuario.email}}</div>
         <div class="telefone">Telefone: {{ user.telefone }}</div>
         <div class="cpf">CPF: {{ user.pessoa?.cpf }}</div>
     </div>

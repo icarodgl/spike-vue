@@ -23,7 +23,7 @@ async function update() {
   <main class="container">
     <div class="head">
       <h1>Contatos</h1>
-      <router-link to="/cadastro/0" class="btn btn-sm btn-success mb-2"
+      <router-link to="contato/cadastro/0" class="btn btn-sm btn-success mb-2"
         ><i class="bi bi-plus-circle"></i> Novo contato</router-link
       >
     </div>
@@ -34,12 +34,14 @@ async function update() {
         :key="user.id"
         :user="user"
         :favorito="true"
+        :pushTo="'contato'"
       ></Card>
       <Card
         v-for="user in users"
         :key="user.id"
         :user="user"
         :favorito="false"
+        :pushTo="'contato'"
       ></Card>
     </div>
   </main>

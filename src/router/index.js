@@ -20,14 +20,14 @@ export const router = createRouter({
       component: () => import('../views/login.vue')
     },
     {
-      path: '/cadastro/',
+      path: '/contato/cadastro',
       name: 'cadastro',
-      component: () => import('../views/cadastro.vue')
+      component: () => import('../views/cadastro-contato.vue')
     },
     {
-      path: '/cadastro/:id',
+      path: '/contato/cadastro/:id',
       name: 'cadastroId',
-      component: () => import('../views/cadastro.vue')
+      component: () => import('../views/cadastro-contato.vue')
     },
     {
       path: '/usuario',
@@ -36,8 +36,18 @@ export const router = createRouter({
     },
     {
       path: '/pessoas',
-      name: 'pessoas',
+      name: 'home pessoas',
       component: () => import('../views/pessoas.vue')
+    },
+    {
+      path: '/pessoas/cadastro',
+      name: 'cadastro pessoas',
+      component: () => import('../views/cadastro-pessoas.vue')
+    },
+    {
+      path: '/pessoas/cadastro/:id',
+      name: 'cadastro pessoas id',
+      component: () => import('../views/cadastro-pessoas.vue')
     },
     {
       path: '/contatos',

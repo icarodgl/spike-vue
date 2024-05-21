@@ -20,9 +20,13 @@ export const usersStore = defineStore({
   actions: {
     async salvarContato(user) {
       const alertStore = useAlertStore();
+      const authStore = useAuthStore();
+
       try {
         this.isLoading = true
-        await fetchWrapper.post(`${baseUrl}/contato/salvar`, user);
+        const req = await fetchWrapper.get(`${baseUrl}usuario/buscar/1`)
+        user.usuario = req.usuario
+        await fetchWrapper.post(`${baseUrl}contato/salvar`, user);
       } catch (error) {
         alertStore.error(this.error);
       }
