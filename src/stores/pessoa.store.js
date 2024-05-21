@@ -100,5 +100,16 @@ export const pessoasStore = defineStore({
     async setPessoa(_pessoa) {
       this.pessoa = _pessoa;
     },
+    async getFoto(_id) {
+      this.isLoading = true;
+      const alertStore = useAlertStore();
+      try { 
+        return await fetchWrapper.get(`${baseUrl}foto/download/${_id}`)
+      } catch (error) {
+        console.log(error);
+        alertStore.error(this.error);
+      }
+      this.isLoading = false;
+    },
   },
 });

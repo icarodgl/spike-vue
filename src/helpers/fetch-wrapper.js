@@ -4,7 +4,7 @@ export const fetchWrapper = {
     get: request('GET'),
     post: request('POST'),
     put: request('PUT'),
-    delete: request('DELETE')
+    delete: request('DELETE'),
 };
 
 function request(method) {
@@ -21,6 +21,7 @@ function request(method) {
     }
 }
 
+
 // helper functions
 
 function authHeader(url) {
@@ -36,7 +37,8 @@ function authHeader(url) {
 
 async function handleResponse(response) {
     const isJson = response.headers?.get('content-type')?.includes('application/json');
-    const data = isJson ? await response.json() : null;
+    const isImage = response.headers?.get('content-type').includes('image')
+    const data = isJson ? await response.json() : isImage ? URL.createObjectURL(await response.blob()): response;
 
     // check for error response
     if (!response.ok) {
@@ -51,5 +53,6 @@ async function handleResponse(response) {
         return Promise.reject(error);
     }
 
+    console.log(isImage,'>>>', data);
     return data;
 }

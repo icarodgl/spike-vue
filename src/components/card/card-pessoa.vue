@@ -1,12 +1,16 @@
 <script setup>
-import { router } from '@/router';
 import { pessoasStore } from "@/stores";
 const pStore = pessoasStore();
 
 const props = defineProps(['pessoa','favorito','pushTo'])
 const emit = defineEmits(['editar'])
+let foto;
+await  updateFoto()
+async function updateFoto(){
+ foto = await pStore.getFoto(props.pessoa.id)
 
 
+}
 async function edit(pessoa){
     pStore.setPessoa(pessoa)
     emit('editar',pessoa)
@@ -25,8 +29,8 @@ async function remover(pessoa){
     <div class="card">
         <div class="foto">
             <picture>
-                <source media="(min-width:650px)" srcset="@/assets/imagens/image.png" alt="imagem de perfil padrão">
-                <img :src="`https://demometaway.vps-kinghost.net:8485/api/${pessoa.foto.id}`" :alt="pessoa.foto.nome" style="width:auto;">
+                <img v-if="foto" :src="foto":alt="pessoa.foto?.nome" style="width:auto;">
+                <img v-else srcset="@/assets/imagens/image.png" alt="foto padrão" style="width:auto;">
             </picture>
         </div>
         <div class="head">
@@ -46,6 +50,15 @@ async function remover(pessoa){
 </template>
 
 <style scoped>
+picture > img{
+    max-width: 200px;
+    max-height: 200px
+}
+.foto{
+    display: flex;
+  justify-content: center;
+  align-content: center;
+}
 .bi {
     cursor: pointer;
     display: flex;
@@ -66,5 +79,8 @@ async function remover(pessoa){
 }
 .head_actions{
     display: flex;
+  position: absolute;
+  top: 10px;
+  right: 5px;
 }
 </style>
