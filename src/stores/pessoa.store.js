@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { fetchWrapper } from "@/helpers";
+import { fetchWrapper , requestFormData} from "@/helpers";
 import { useAuthStore } from "@/stores";
 import { useAlertStore } from "@/stores";
 
@@ -104,12 +104,27 @@ export const pessoasStore = defineStore({
       this.isLoading = true;
       const alertStore = useAlertStore();
       try { 
-        return await fetchWrapper.get(`${baseUrl}foto/download/${_id}`)
+        const resp =  await fetchWrapper.get(`${baseUrl}foto/download/${_id}`)
+        alertStore.success(this.sucesso);
+        return resp
       } catch (error) {
         console.log(error);
         alertStore.error(this.error);
       }
       this.isLoading = false;
     },
-  },
+    async salvarFoto(id, imagem) {
+      this.isLoading = true;
+      const alertStore = useAlertStore();
+      try { 
+        const resp = await requestFormData(`${baseUrl}foto/upload/${id}`, imagem)
+        alertStore.success(this.sucesso);
+        return resp
+      } catch (error) {
+        console.log(error);
+        alertStore.error(this.error);
+      }
+      this.isLoading = false;
+    },
+},
 });

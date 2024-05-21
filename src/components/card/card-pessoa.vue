@@ -8,8 +8,6 @@ let foto;
 await updateFoto()
 async function updateFoto() {
     foto = await pStore.getFoto(props.pessoa.id)
-
-
 }
 async function edit(pessoa) {
     pStore.setPessoa(pessoa)

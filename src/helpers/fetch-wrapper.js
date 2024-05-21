@@ -15,12 +15,20 @@ function request(method) {
         };
         if (body) {
             requestOptions.headers['Content-Type'] = 'application/json';
-            requestOptions.body = JSON.stringify(body);
+            requestOptions.body =  JSON.stringify(body);
         }
         return fetch(url, requestOptions).then(handleResponse);
     }
 }
 
+export function requestFormData(url, body){
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(url),
+        body
+    };
+    return fetch(url, requestOptions).then(handleResponse);
+}
 
 // helper functions
 
