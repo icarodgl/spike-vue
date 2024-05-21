@@ -5,7 +5,7 @@ const authStore = useAuthStore();
 </script>
 
 <template>
-  <nav class="main-nav navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,8 +38,5 @@ const authStore = useAuthStore();
 </template>
 
 <style scoped>
-.main-nav {
-  display: flex;
-  justify-content: end;
-}
+  
 </style>

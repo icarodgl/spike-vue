@@ -2,24 +2,24 @@
 import { pessoasStore } from "@/stores";
 const pStore = pessoasStore();
 
-const props = defineProps(['pessoa','favorito','pushTo'])
+const props = defineProps(['pessoa', 'favorito', 'pushTo'])
 const emit = defineEmits(['editar'])
 let foto;
-await  updateFoto()
-async function updateFoto(){
- foto = await pStore.getFoto(props.pessoa.id)
+await updateFoto()
+async function updateFoto() {
+    foto = await pStore.getFoto(props.pessoa.id)
 
 
 }
-async function edit(pessoa){
+async function edit(pessoa) {
     pStore.setPessoa(pessoa)
-    emit('editar',pessoa)
+    emit('editar', pessoa)
 }
 
-async function update(){
+async function update() {
     pStore.getAll();
 }
-async function remover(pessoa){
+async function remover(pessoa) {
     await pStore.remover(pessoa)
     update()
 }
@@ -29,8 +29,8 @@ async function remover(pessoa){
     <div class="card">
         <div class="foto">
             <picture>
-                <img v-if="foto" :src="foto":alt="pessoa.foto?.nome" style="width:auto;">
-                <img v-else srcset="@/assets/imagens/image.png" alt="foto padrão" style="width:auto;">
+                <img class="img-thumbnail" v-if="foto" :src="foto" :alt="pessoa.foto?.nome" style="width:auto;">
+                <img class="img-thumbnail" v-else srcset="@/assets/imagens/image.png" alt="foto padrão" style="width:auto;">
             </picture>
         </div>
         <div class="head">
@@ -50,37 +50,44 @@ async function remover(pessoa){
 </template>
 
 <style scoped>
-picture > img{
+picture>img {
     max-width: 200px;
     max-height: 200px
 }
-.foto{
+
+.foto {
     display: flex;
-  justify-content: center;
-  align-content: center;
+    justify-content: center;
+    align-content: center;
+    height: 100%;
 }
+
 .bi {
     cursor: pointer;
     display: flex;
     justify-content: center;
-  }
-.card{
+}
+
+.card {
     padding: 10px;
     margin: 5px;
     min-width: 300px;
 }
-.btn_acoes{
+
+.btn_acoes {
     display: flex;
     justify-content: space-around;
-  }
-.head{
+}
+
+.head {
     display: flex;
     justify-content: space-between;
 }
-.head_actions{
+
+.head_actions {
     display: flex;
-  position: absolute;
-  top: 10px;
-  right: 5px;
+    position: absolute;
+    top: 10px;
+    right: 5px;
 }
 </style>
