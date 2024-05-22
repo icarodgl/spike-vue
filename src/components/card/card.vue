@@ -5,7 +5,7 @@ import { usersStore } from "@/stores";
 
 const usersS = usersStore();
 
-const props = defineProps(['pessoa','favorito','pushTo'])
+const props = defineProps(['user','favorito','pushTo'])
 
 async function favoritar(user){
   await usersS.favoritar(user)
@@ -62,7 +62,7 @@ async function remover(user){
                 </div>
             </div>
         </div>
-        <div class="email">email: {{ user.email || user.pessoa.email || user.usuario.email}}</div>
+        <div class="email">email: {{ user.email || user.pessoa.email}}</div>
         <div class="telefone">Telefone: {{ user.telefone }}</div>
         <div class="cpf">CPF: {{ user.pessoa?.cpf }}</div>
     </div>
