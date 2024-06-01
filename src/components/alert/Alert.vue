@@ -11,7 +11,7 @@ const { alert } = storeToRefs(alertStore);
     <div v-if="alert" class="base">
         <div class="m-3">
             <div class="alert alert-dismissable" :class="alert.type">
-                <button @click="alertStore.clear()" class="btn btn-link close">&times;</button>
+                <button @click="alertStore.clear()" class="btn btn-link close"><i class="bi bi-x-square-fill"></i></button>
                 {{alert.message}}
             </div>
         </div>
@@ -22,10 +22,16 @@ const { alert } = storeToRefs(alertStore);
 .alert{
     position: fixed;
     bottom: 10px;
-    right: 20%;
+    right: 20px;
     min-width: 300px;
+    padding: 0px 0px;
+    margin: 0px 0px;
 }
 .base{
+    z-index: 999;
     position: absolute;
+}
+.bi-x-square-fill{
+    color: rgb(0, 0, 0);
 }
 </style>
