@@ -8,7 +8,9 @@ defineEmits(['change'])
 const maskConfig = {
     telefone: ['(##) ####-####', '(##) #####-####'],
     cpf:  '###.###.###-##',
-    data: '##/##/####'
+    cep:'########',
+    data: '##/##/####',
+    numero: '#####'
 }
 </script>
 

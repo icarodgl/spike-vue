@@ -7,6 +7,11 @@ const usersS = usersStore();
 
 const props = defineProps(['user','favorito','pushTo'])
 
+let foto;
+await updateFoto()
+async function updateFoto() {
+    foto = await usersS.getFoto(props.user?.pessoa?.id)
+}
 async function favoritar(user){
   await usersS.favoritar(user)
   update()
@@ -42,6 +47,12 @@ async function remover(user){
 
 <template>
     <div class="card">
+        <div class="foto">
+            <picture>
+                <img class="img-thumbnail" v-if="foto" :src="foto" :alt="user.pessoa.foto?.nome" style="width:auto;">
+                <img class="img-thumbnail" v-else srcset="@/assets/imagens/image.png" alt="foto padrão" style="width:auto;">
+            </picture>
+        </div>
         <div class="head">
             <div class="head_info">
                 <div class=" tag">{{ user.id }} {{ user.tipoContato }} - {{ user.tag }}</div>
@@ -69,6 +80,18 @@ async function remover(user){
 </template>
 
 <style scoped>
+picture>img {
+    max-width: 200px;
+    max-height: 200px
+}
+
+.foto {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: 100%;
+    margin-top: 15px;
+}
 .bi {
     cursor: pointer;
     display: flex;
@@ -78,6 +101,7 @@ async function remover(user){
     padding: 10px;
     margin: 5px;
     min-width: 300px;
+    max-width: 20vw;
 }
 .btn_acoes{
     display: flex;
@@ -89,5 +113,8 @@ async function remover(user){
 }
 .head_actions{
     display: flex;
+    position: absolute;
+    top: 5px;
+    right: 2px;
 }
 </style>

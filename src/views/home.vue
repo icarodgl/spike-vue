@@ -60,7 +60,6 @@ async function update() {
 .cards {
   display: flex;
   flex-wrap: wrap;
-  justify-content:center;
 }
 .head{
   display: flex;

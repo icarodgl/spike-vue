@@ -35,6 +35,14 @@ export const usersStore = defineStore({
     getLocalById(id){
       this.user = this.users
     },
+    async getFoto(_id) {
+      try { 
+        const resp =  await fetchWrapper.get(`${baseUrl}foto/download/${_id}`)
+        return resp
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async getAll() {
       this.isLoading = true
       const authStore = useAuthStore();

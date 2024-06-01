@@ -124,6 +124,15 @@ export const pessoasStore = defineStore({
         alertStore.error(this.error);
       }
       this.isLoading = false;
+    },    async getFoto(_id) {
+      this.isLoading = true;
+      try { 
+        const resp =  await fetchWrapper.get(`${baseUrl}foto/download/${_id}`)
+        return resp
+      } catch (error) {
+        console.log(error);
+      }
+      this.isLoading = false;
     },
 },
 });

@@ -101,14 +101,11 @@ export const pessoasStore = defineStore({
     },
     async getFoto(_id) {
       this.isLoading = true;
-      const alertStore = useAlertStore();
       try { 
         const resp =  await fetchWrapper.get(`${baseUrl}foto/download/${_id}`)
-        alertStore.success(this.sucesso);
         return resp
       } catch (error) {
         console.log(error);
-        alertStore.error(this.error);
       }
       this.isLoading = false;
     },

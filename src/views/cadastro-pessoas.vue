@@ -47,16 +47,16 @@ async function salarImagem(image){
       <div class="endereco">
         <FormGroupField :errors="errors" :dado="pessoa.endereco?.bairro" @change="(e) => (pessoa.endereco.bairro = e)"
           :name="'bairro'"></FormGroupField>
-        <FormGroupField :errors="errors" :dado="pessoa.endereco?.cep" @change="(e) => (pessoa.endereco.cep = e)"
-          :name="'cep'"></FormGroupField>
+        <FormGroupMasked :errors="errors" :dado="pessoa.endereco?.cep" @change="(e) => (pessoa.endereco.cep = e)"
+          :name="'cep'" :mascara="'cep'"></FormGroupMasked>
         <FormGroupField :errors="errors" :dado="pessoa.endereco?.cidade" @change="(e) => (pessoa.endereco.cidade = e)"
           :name="'cidade'"></FormGroupField>
         <FormGroupField :errors="errors" :dado="pessoa.endereco?.estado" @change="(e) => (pessoa.endereco.estado = e)"
           :name="'estado'"></FormGroupField>
         <FormGroupField :errors="errors" :dado="pessoa.endereco?.logradouro"
           @change="(e) => (pessoa.endereco.logradouro = e)" :name="'logradouro'"></FormGroupField>
-        <FormGroupField :errors="errors" :dado="pessoa.endereco?.numero" @change="(e) => (pessoa.endereco.numero = e)"
-          :name="'numero'"></FormGroupField>
+        <FormGroupMasked :errors="{}" :mascara="'numero'" :dado="pessoa.endereco?.numero" @change="(e) => (pessoa.endereco.numero = e)"
+          :name="'numero'"></FormGroupMasked>
         <FormGroupField :errors="errors" :dado="pessoa.endereco?.pais" @change="(e) => (pessoa.endereco.pais = e)"
           :name="'pais'"></FormGroupField>
       </div>
