@@ -55,12 +55,18 @@ h1{
   text-align: center;
 }
 .formulario{
-  width: 30%;
+  width: 33%;
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 500%;
-  left: 40%;
+  left: 33%;
+  
+}
+@media (max-width: 600px) {
+  .formulario{
+  width: 80%;
+  left: 10%;
+  }
 }
 input{
   padding: 5px;
