@@ -1,6 +1,5 @@
 <script setup>
 import { router } from '@/router';
-import { contatoStore } from "@/stores/user.store";
 import { usersStore } from "@/stores";
 
 const usersS = usersStore();
@@ -22,12 +21,10 @@ async function desfavoritar(user){
 }
 
 async function editUser(user){
-  contatoStore.setContato(user)
   router.push(`${props.pushTo}/contato/cadastro/${user.id}`)
 }
 
 async function novoContato(){
-  contatoStore.newContato()
   router.push(`${props.pushTo}/contato/cadastro/0`)
 }
 

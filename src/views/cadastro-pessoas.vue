@@ -1,6 +1,5 @@
 <script setup>
 import * as Yup from "yup";
-import { useBase64 } from '@vueuse/core'
 import { Form } from "vee-validate";
 import { pessoasStore } from "@/stores"
 import FormGroupField from "./../components/forms/form-group-field.vue";

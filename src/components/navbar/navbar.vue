@@ -18,7 +18,7 @@ const authStore = useAuthStore();
           <RouterLink to="/">home</RouterLink>
         </li>
         <li class="nav-item">
-          <RouterLink to="/cadastro">Meu cadastro</RouterLink>
+          <RouterLink :to="'/usuario/cadastro/'+authStore.user.id">Meu cadastro</RouterLink>
         </li>
         <li class="nav-item">
           <RouterLink to="/usuario">Usuários</RouterLink>

@@ -24,7 +24,9 @@ export const usersStore = defineStore({
 
       try {
         this.isLoading = true
-        const req = await fetchWrapper.get(`${baseUrl}usuario/buscar/1`)
+        const authStore = useAuthStore();
+
+        const req = await fetchWrapper.get(`${baseUrl}usuario/buscar/${authStore.user.id}`)
         user.usuario = req.usuario
         await fetchWrapper.post(`${baseUrl}contato/salvar`, user);
       } catch (error) {

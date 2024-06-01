@@ -13,7 +13,7 @@ defineEmits(['change'])
         <label>{{name}}</label>
         <Field 
         class="form-control" 
-        type="text" 
+        type="text"
         :name="name" 
         :value="dado"
         :class="{ 'is-invalid': errors[name] }" 
