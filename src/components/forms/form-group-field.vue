@@ -6,7 +6,6 @@ defineEmits(['change'])
 
 let isPass = true
 function showPass(){
-    console.log(name=='password' || isPass);
     isPass = !isPass
 }
 

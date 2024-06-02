@@ -65,7 +65,6 @@ export const pessoasStore = defineStore({
         const users = await fetchWrapper.get(`${baseUrl}pessoa/buscar/${_id}`);
         alertStore.success(this.sucesso);
       } catch (error) {
-        console.log(error);
         alertStore.error(this.error);
       }
       this.isLoading = false;
@@ -79,7 +78,6 @@ export const pessoasStore = defineStore({
         });
         alertStore.success(this.sucesso);
       } catch (error) {
-        console.log(error);
         alertStore.error(this.error);
       }
       this.isLoading = false;
@@ -100,14 +98,8 @@ export const pessoasStore = defineStore({
       this.pessoa = _pessoa;
     },
     async getFoto(_id) {
-      this.isLoading = true;
-      try { 
         const resp =  await fetchWrapper.get(`${baseUrl}foto/download/${_id}`)
         return resp
-      } catch (error) {
-        console.log(error);
-      }
-      this.isLoading = false;
     },
     async salvarFoto(id, imagem) {
       this.isLoading = true;
@@ -117,7 +109,6 @@ export const pessoasStore = defineStore({
         alertStore.success(this.sucesso);
         return resp
       } catch (error) {
-        console.log(error);
         alertStore.error(this.error);
       }
       this.isLoading = false;

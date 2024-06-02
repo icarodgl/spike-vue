@@ -27,7 +27,6 @@ async function onSubmit() {
 async function salarImagem(image){
   let formData = new FormData();
   formData.append('foto', image);
-  console.log(formData);
   pStore.salvarFoto(pessoa.id, formData)
 }
 </script>

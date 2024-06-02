@@ -6,27 +6,10 @@ const usersS = usuarioStore();
 
 const props = defineProps(['user','favorito','pushTo'])
 
-let foto;
-await updateFoto()
-async function updateFoto() {
-    foto = await usersS.getFoto(props.user?.pessoa?.id)
-}
-async function favoritar(user){
-  await usersS.favoritar(user)
-  update()
-}
-async function desfavoritar(user){
-   await usersS.desfavoritar(user)
-  update()
-}
-
 async function editUser(user){
-  router.push(`${props.pushTo}/contato/cadastro/${user.id}`)
+  router.push(`${props.pushTo}/usuario/cadastro/${user.id}`)
 }
 
-async function novoContato(){
-  router.push(`${props.pushTo}/contato/cadastro/0`)
-}
 
 async function update(){
     usersS.getAll();
@@ -44,16 +27,10 @@ async function remover(user){
 
 <template>
     <div class="card">
-        <div class="foto">
-            <picture>
-                <img class="img-thumbnail" v-if="foto" :src="foto" :alt="user.pessoa.foto?.nome" style="width:auto;">
-                <img class="img-thumbnail" v-else srcset="@/assets/imagens/image.png" alt="foto padrão" style="width:auto;">
-            </picture>
-        </div>
         <div class="head">
             <div class="head_info">
-                <div class=" tag">{{ user.id }} {{ user.tipoContato }} - {{ user.tag }}</div>
-                <div class="nome">{{ user.pessoa?.nome }}</div>
+                <div class=" tag">{{ user.id }}</div>
+                <div class="nome">{{ user.nome }}</div>
             </div>
             <div class="head_actions">
                 <div class="btn_acoes">
@@ -70,9 +47,9 @@ async function remover(user){
                 </div>
             </div>
         </div>
-        <div class="email">email: {{ user.email || user.pessoa.email}}</div>
+        <div class="email">email: {{ user.email || user.email}}</div>
         <div class="telefone">Telefone: {{ user.telefone }}</div>
-        <div class="cpf">CPF: {{ user.pessoa?.cpf }}</div>
+        <div class="cpf">CPF: {{ user.cpf }}</div>
     </div>
 </template>
 

@@ -1,10 +1,10 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { usersStore } from "@/stores";
+import { usuarioStore } from "@/stores";
 import { RouterLink } from "vue-router";
 import { useAlertStore } from "@/stores";
 import Card from "./../components/card/card.vue";
-const userStore = usersStore();
+const userStore = usuarioStore();
 const { favoritos, users, isLoading } = storeToRefs(userStore);
 
 update();

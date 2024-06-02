@@ -7,8 +7,8 @@ import { useAlertStore } from "@/stores";
 
 const baseUrl = "https://demometaway.vps-kinghost.net:8485/api/";
 
-export const usuarioStore = defineStore({
-  id: "usuarios",
+export const ContatoStore = defineStore({
+  id: "contato",
   state: () => ({
     sucesso: "Operação realizada com sucesso.",
     error: "Registro não pode ser atualizado.",
@@ -42,16 +42,16 @@ export const usuarioStore = defineStore({
         const resp =  await fetchWrapper.get(`${baseUrl}foto/download/${_id}`)
         return resp
       } catch (error) {
+        alertStore.error(this.error);
       }
     },
     async getAll() {
       this.isLoading = true
+      const authStore = useAuthStore();
       const alertStore = useAlertStore();
       try {
-        this.users = await fetchWrapper.post(
-          `${baseUrl}usuario/pesquisar`,{
-            "termo": ""
-          }
+        this.users = await fetchWrapper.get(
+          `${baseUrl}contato/listar/${authStore.user.id}`
         );
       } catch (error) {
         alertStore.error(this.error);
@@ -130,6 +130,7 @@ export const usuarioStore = defineStore({
           `${baseUrl}contato/listar/${authStore.user.id}`
         );
         this.user = users.find(u => u.id === id)
+        //this.user = await fetchWrapper.get(`${baseUrl}pessoa/buscar/${id}`);
         alertStore.success(this.sucesso);
       } catch (error) {
         alertStore.error(this.error);

@@ -2,26 +2,26 @@
 import { storeToRefs } from "pinia";
 import { toRaw } from 'vue'
 import { router } from '@/router';
-import { pessoasStore } from "@/stores";
-import CardPessoa from "./../components/card/card-pessoa.vue";
-const pStore = pessoasStore();
-const { pessoas } = storeToRefs(pStore);
-let _pessoas = toRaw(pessoas)
+import { usuarioStore } from "@/stores";
+import CardUser from "./../components/card/card-user.vue";
+const uStore = usuarioStore();
+const { users } = storeToRefs(uStore);
+let _usuarios = users
 let busca = ""
 let buscou = false
-await pStore.getAll()
+await uStore.getAll()
 
 async function buscar() {
-  pStore.pesquisar(busca)
+  uStore.pesquisar(busca)
   buscou = true
 }
 async function limparBusca() {
-  pStore.getAll()
+  uStore.getAll()
   busca = ""
   buscou = false
 }
 function editUser(e) {
-  pStore.setPessoa(e)
+  // uStore.setPessoa(e)
   router.push(`/usuario/cadastro/${e.id}`)
 }
 </script>
@@ -41,7 +41,7 @@ function editUser(e) {
 
     </div>
     <div class="cards">
-      <CardPessoa v-for="p in _pessoas" :key="p.id" :pessoa="p" @editar="editUser"></CardPessoa>
+      <CardUser v-for="u in _usuarios" :key="u.id" :user="u" @editar="editUser"></CardUser>
     </div>
   </main>
 </template>
@@ -68,7 +68,6 @@ function editUser(e) {
 .cards {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
 }
 
 .head {

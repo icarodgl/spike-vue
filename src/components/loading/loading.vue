@@ -1,7 +1,7 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { usersStore } from "@/stores";
-const userStore = usersStore();
+import { usuarioStore } from "@/stores";
+const userStore = usuarioStore();
 const {isLoading} = storeToRefs(userStore);
 </script>
 
