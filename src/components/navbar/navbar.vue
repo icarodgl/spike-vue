@@ -17,10 +17,10 @@ const authStore = useAuthStore();
         <li class="nav-item">
           <RouterLink to="/">home</RouterLink>
         </li>
-        <li class="nav-item">
-          <RouterLink :to="'/usuario/cadastro/'+authStore.user.id">Meu cadastro</RouterLink>
+        <li class="nav-item" >
+          <RouterLink :to="'/usuario/cadastro/'+authStore.user?.id">Meu cadastro</RouterLink>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-if="authStore.isAdmin()">
           <RouterLink to="/usuario">Usuários</RouterLink>
         </li>
         <li class="nav-item">

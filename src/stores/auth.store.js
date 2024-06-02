@@ -32,6 +32,10 @@ export const useAuthStore = defineStore({
                 alertStore.error(error);                
             }
         },
+        isAdmin(){
+            return this.user?.tipos?.some(x=> x == 'ROLE_ADMIN')
+        }
+        ,
         logout() {
             this.user = null;
             localStorage.removeItem('user');
