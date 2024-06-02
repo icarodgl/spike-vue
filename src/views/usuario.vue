@@ -11,29 +11,31 @@ let busca = ""
 let buscou = false
 await pStore.getAll()
 
-async function buscar(){
+async function buscar() {
   pStore.pesquisar(busca)
   buscou = true
 }
-async function limparBusca(){
+async function limparBusca() {
   pStore.getAll()
   busca = ""
   buscou = false
 }
 function editUser(e) {
   pStore.setPessoa(e)
-  router.push(`/pessoas/cadastro/${e.id}`)
+  router.push(`/usuario/cadastro/${e.id}`)
 }
 </script>
 
 <template>
   <main class="container">
     <div class="head">
-      <h1>Pessoas</h1>
+      <h1>Usuários</h1>
+      <router-link to="/usuario/cadastro/0" class="btn btn-sm btn-success mb-2"><i class="bi bi-plus-circle"></i> Novo</router-link>
       <div class="search input-group mb-3">
-        <input type="text" v-on:keyup.enter="buscar()" v-model="busca" class="form-control" placeholder="Nome" aria-label="Nome"
-          aria-describedby="basic-addon1">
-          <span v-if="buscou && busca !==''"  @click="limparBusca()" class="input-group-text" id="basic-addon2"><i class="bi bi-x-lg"></i></span>
+        <input type="text" v-on:keyup.enter="buscar()" v-model="busca" class="form-control" placeholder="Nome"
+          aria-label="Nome" aria-describedby="basic-addon1">
+        <span v-if="buscou && busca !== ''" @click="limparBusca()" class="input-group-text" id="basic-addon2"><i
+            class="bi bi-x-lg"></i></span>
         <span v-else @click="buscar()" class="input-group-text" id="basic-addon2"><i class="bi bi-search"></i></span>
       </div>
 
@@ -46,12 +48,13 @@ function editUser(e) {
 
 
 <style scoped>
-.search{
+.search {
   width: 300px;
   position: relative;
   left: 30%;
   top: 8px;
 }
+
 .btn {
   height: 34px;
   margin: 10px 10px 10px 20px;
@@ -72,29 +75,34 @@ function editUser(e) {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  
-}
-.input-group-text{
-  cursor: pointer
-}
-h1{
-  position: absolute;
-}
-@media (max-width: 500px) {
-  .search{
-  width: 300px;
-  position: relative;
-  left: 0px;
-  top: 8px;
-}
 
 }
+
+.input-group-text {
+  cursor: pointer
+}
+
+h1 {
+  position: absolute;
+}
+
+@media (max-width: 500px) {
+  .search {
+    width: 300px;
+    position: relative;
+    left: 0px;
+    top: 8px;
+  }
+
+}
+
 @media (max-width: 800px) {
-  .head{
+  .head {
     flex-wrap: wrap;
   }
-h1{
-  position: relative;
-}
+
+  h1 {
+    position: relative;
+  }
 }
 </style>

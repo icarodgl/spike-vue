@@ -5,21 +5,20 @@ import { Form } from "vee-validate";
 import {cadastroStore} from "@/stores"
 import FormGroupField from "../components/forms/form-group-field.vue";
 import FormGroupMasked from "../components/forms/form-group-masked.vue";
-
 const route = useRoute();
 const cStore = cadastroStore();
 const id = route.params.id;
-
-if(id > 0) {
-  await cStore.get(id)
-}
+const isNewUser = id==0; 
+await cStore.get(id)
 let user = cStore.user
 
 const schema = Yup.object().shape({
-  nome: Yup.string().required("campo obrigatório"),
-  email: Yup.string().email().required("Email inválido"),
-  tipoContato: Yup.string().required("campo obrigatório"),
-  telefone: Yup.string().required("campo obrigatório"),
+  'username': Yup.string().required("Username é obrigatório"),
+  'nome': Yup.string().required("Nome é obrigatório"),
+  'email': Yup.string().email('Email é obrigatório').required("Email inválido"),
+  'telefone': Yup.string().required("Telefone é obrigatório").min(14,'telefone inválido'),
+  'cpf': Yup.string().required("CPF é obrigatório").length(14, 'CPF inváido'),
+  'Data de Nascimento': Yup.string().required('Data de nascimento é obrigatório').min(10, 'Data errada')
 });
 
 async function onSubmit() {
@@ -48,6 +47,13 @@ async function onSubmit() {
           :name="'username'"
         ></FormGroupField>
         <FormGroupField
+          v-if="isNewUser"
+          :errors="errors"
+          :dado="user.password"
+          @change="(e) => (user.password = user.password = e)"
+          :name="'password'"
+        ></FormGroupField>
+        <FormGroupField
           :errors="errors"
           :dado="user.nome"
           @change="(e) => (user.nome = user.nome = e)"
@@ -55,26 +61,26 @@ async function onSubmit() {
         ></FormGroupField>
         <FormGroupField
           :errors="errors"
-          :dado="user.email || user.email"
-          @change="(e) => (user.email = user.email = user.email = e)"
+          :dado="user.email"
+          @change="(e) => (user.email = user.email = e)"
           :name="'email'"
         ></FormGroupField>
         <FormGroupMasked
-          :errors="{errors}"
+          :errors="errors"
           :dado="user.telefone"
-          @change="(e) => (user.telefone = user.telefone = e)"
+          @change="(e) => (user.telefone = e)"
           :name="'telefone'"
           :mascara="'telefone'"
         ></FormGroupMasked>
         <FormGroupMasked
-          :errors="{}"
-          :name="'dataNascimento'"
-          :dado="user.dataNascimento"
-          @change="(e) => (user.dataNascimento = e)"
+          :errors="errors"
+          :name="'Data de Nascimento'"
+          :dado="user.data"
+          @change="(e) => user.data = e"
           :mascara="'data'"
         ></FormGroupMasked>
         <FormGroupMasked
-          :errors="{}"
+          :errors="errors"
           :name="'cpf'"
           :dado="user.cpf"
           @change="(e) => (user.cpf = e)"
@@ -82,8 +88,8 @@ async function onSubmit() {
         ></FormGroupMasked>
       </div>
 
-      <button @click="onSubmit()" class="btn btn-primary" :disabled="isSubmitting">
-        cadastrar
+      <button class="btn btn-primary" :disabled="isSubmitting || Object.keys(errors).length > 0">
+        cadastrar 
       </button>
     </Form>
   </div>
