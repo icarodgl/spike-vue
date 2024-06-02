@@ -52,7 +52,7 @@ export const cadastroStore = defineStore({
 
     async save(_user) {
       const alertStore = useAlertStore();
-      delete _user.id
+      if(_user.id == 0) delete _user.id
       _user.dataNascimento = outDateTransform(_user.data);
       const newUser = {
         tipos: ["ROLE_USER"],

@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
-
 import { fetchWrapper } from "@/helpers";
 import { useAuthStore } from "@/stores";
 import { useAlertStore } from "@/stores";
+import {useLoadStore} from "@/stores"
 
 
 const baseUrl = "https://demometaway.vps-kinghost.net:8485/api/";
@@ -21,9 +21,9 @@ export const usuarioStore = defineStore({
     async salvarContato(user) {
       const alertStore = useAlertStore();
       const authStore = useAuthStore();
-
+      const loadStore = useLoadStore();
+      loadStore.show()
       try {
-        this.isLoading = true
         const authStore = useAuthStore();
 
         const req = await fetchWrapper.get(`${baseUrl}usuario/buscar/${authStore.user.id}`)
@@ -32,7 +32,7 @@ export const usuarioStore = defineStore({
       } catch (error) {
         alertStore.error(this.error);
       }
-      this.isLoading = false
+       loadStore.close();
     },
     getLocalById(id){
       this.user = this.users
@@ -45,8 +45,9 @@ export const usuarioStore = defineStore({
       }
     },
     async getAll() {
-      this.isLoading = true
+      const loadStore = useLoadStore();
       const alertStore = useAlertStore();
+      loadStore.show();
       try {
         this.users = await fetchWrapper.post(
           `${baseUrl}usuario/pesquisar`,{
@@ -56,71 +57,19 @@ export const usuarioStore = defineStore({
       } catch (error) {
         alertStore.error(this.error);
       }
-      this.isLoading = false
+       loadStore.close();
     },
-    async getfavoritos() {
-      this.isLoading = true
+    async pesquisar(termo) {
+      const loadStore = useLoadStore();
+       loadStore.show();;
       const alertStore = useAlertStore();
       try {
-        this.favoritos = await fetchWrapper.get(`${baseUrl}favorito/pesquisar`);
-      } catch (error) {
-        const alertStore = useAlertStore();
-        alertStore.error(this.error);
-      }
-      this.isLoading = false
-    },
-    async favoritar(user) {
-      this.isLoading = true
-      const alertStore = useAlertStore();
-      try {
-        await fetchWrapper.post(`${baseUrl}favorito/salvar`, user);
-        await fetchWrapper.delete(`${baseUrl}contato/remover/${user.id}`);
+        this.usuarios = await fetchWrapper.post(`${baseUrl}usuario/pesquisar/`, {termo});
         alertStore.success(this.sucesso);
       } catch (error) {
         alertStore.error(this.error);
       }
-      this.isLoading = false
-    },
-    async desfavoritar(user) {
-      this.isLoading = true
-      const alertStore = useAlertStore();
-      try {
-        await fetchWrapper.post(`${baseUrl}contato/salvar`, user);
-        await fetchWrapper.delete(`${baseUrl}favorito/remover/${user.id}`);
-        alertStore.success(this.sucesso);
-      } catch (error) {
-        alertStore.error(this.error);
-      }
-      this.isLoading = false
-    },
-    async addContato(user) {
-      const alertStore = useAlertStore();
-      try {
-        await fetchWrapper.post(`${baseUrl}contato/salvar`, user);
-        alertStore.success(this.sucesso);
-      } catch (error) {
-        alertStore.error(this.error);
-      }
-    },
-    async removeFavorito(user) {
-      const alertStore = useAlertStore();
-      try {
-        await fetchWrapper.delete(`${baseUrl}favorito/remover/${user.id}`);
-        alertStore.success(this.sucesso);
-      } catch (error) {
-        const alertStore = useAlertStore();
-        alertStore.error(this.error);
-      }
-    },
-    async removeContato(user) {
-      const alertStore = useAlertStore();
-      try {
-        await fetchWrapper.delete(`${baseUrl}contato/remover/${user.id}`);
-        alertStore.success(this.sucesso);
-      } catch (error) {
-        const alertStore = useAlertStore();
-        alertStore.error(this.error);
-      }
+       loadStore.close();;
     },
     async getById(id) {
       const alertStore = useAlertStore();
@@ -135,8 +84,19 @@ export const usuarioStore = defineStore({
         alertStore.error(this.error);
       }
     },
+    async remover(_user) {
+      const alertStore = useAlertStore();
+      try {
+        await fetchWrapper.delete(`${baseUrl}usuario/remover/${_user.id}`);
+        alertStore.success(this.sucesso);
+      } catch (error) {
+        const alertStore = useAlertStore();
+        alertStore.error(this.error);
+      }
+    },
     async update(id, params) {
-      this.isLoading = true
+      const loadStore = useLoadStore();
+       loadStore.show();
       const alertStore = useAlertStore();
 
       await fetchWrapper.put(`${baseUrl}/${id}`, params);
@@ -152,10 +112,11 @@ export const usuarioStore = defineStore({
         // update auth user in pinia state
         authStore.user = user;
       }
-      this.isLoading = false
+       loadStore.close();
     },
     async delete(id) {
-      this.isLoading = true
+      const loadStore = useLoadStore();
+       loadStore.show();
       // add isDeleting prop to user being deleted
       this.users.find((x) => x.id === id).isDeleting = true;
 
@@ -169,7 +130,7 @@ export const usuarioStore = defineStore({
       if (id === authStore.user.id) {
         authStore.logout();
       }
-      this.isLoading = false
+       loadStore.close();
     },
   },
 });

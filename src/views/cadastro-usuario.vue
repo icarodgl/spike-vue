@@ -3,9 +3,11 @@ import { useRoute } from "vue-router";
 import * as Yup from "yup";
 import { Form } from "vee-validate";
 import {cadastroStore} from "@/stores"
+import { useAuthStore } from "@/stores";
 import FormGroupField from "../components/forms/form-group-field.vue";
 import FormGroupMasked from "../components/forms/form-group-masked.vue";
 const route = useRoute();
+const authStore = useAuthStore();
 const cStore = cadastroStore();
 const id = route.params.id;
 const isNewUser = id==0; 
@@ -22,7 +24,7 @@ const schema = Yup.object().shape({
 });
 
 async function onSubmit() {
-  if(id > 0){
+  if(id == authStore.user.id){
     await cStore.update(user)
   }else{
     await cStore.save(user)

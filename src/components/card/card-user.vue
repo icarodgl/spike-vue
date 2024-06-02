@@ -1,27 +1,9 @@
 <script setup>
 import { router } from '@/router';
-import { usuarioStore } from "@/stores";
-
-const usersS = usuarioStore();
-
-const props = defineProps(['user','favorito','pushTo'])
+const props = defineProps(['user','pushTo'])
 
 async function editUser(user){
-  router.push(`${props.pushTo}/usuario/cadastro/${user.id}`)
-}
-
-
-async function update(){
-    usersS.getAll();
-    usersS.getfavoritos() 
-}
-async function remover(user){
-    if (props.favorito){
-       await usersS.removeFavorito(user)
-    }else{
-        await usersS.removeContato(user)
-    }
-    update()
+  router.push(`/usuario/cadastro/${user.id}`)
 }
 </script>
 
@@ -35,15 +17,6 @@ async function remover(user){
             <div class="head_actions">
                 <div class="btn_acoes">
                     <i @click="editUser(user)" class="bi bi-pencil-square"></i>
-
-                    <i @click="remover(user)" class="bi bi-trash"></i>
-
-                    <i v-if="favorito" @click="desfavoritar(user)" class="bi bi-star-fill"></i>
-                    <i v-else @click="favoritar(user)" class="bi bi-star"></i>
-                </div>
-                <div class="privado">
-                    <i v-if="user.privado" class="bi bi-lock-fill"></i>
-                    <i v-else class="bi bi-lock"></i>
                 </div>
             </div>
         </div>

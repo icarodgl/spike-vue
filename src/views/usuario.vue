@@ -1,6 +1,5 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { toRaw } from 'vue'
 import { router } from '@/router';
 import { usuarioStore } from "@/stores";
 import CardUser from "./../components/card/card-user.vue";
@@ -21,7 +20,7 @@ async function limparBusca() {
   buscou = false
 }
 function editUser(e) {
-  // uStore.setPessoa(e)
+  console.log(e.id);
   router.push(`/usuario/cadastro/${e.id}`)
 }
 </script>

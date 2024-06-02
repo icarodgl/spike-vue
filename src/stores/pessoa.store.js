@@ -1,8 +1,9 @@
 import { defineStore } from "pinia";
 
-import { fetchWrapper , requestFormData} from "@/helpers";
+import { fetchWrapper, requestFormData } from "@/helpers";
 import { useAuthStore } from "@/stores";
 import { useAlertStore } from "@/stores";
+import { useLoadStore } from "@/stores";
 
 const baseUrl = "https://demometaway.vps-kinghost.net:8485/api/";
 
@@ -36,7 +37,8 @@ export const pessoasStore = defineStore({
   }),
   actions: {
     async salvar(_user) {
-      this.isLoading = true;
+      const loadStore = useLoadStore();
+      loadStore.show();
       const alertStore = useAlertStore();
       const authStore = useAuthStore();
       try {
@@ -45,11 +47,12 @@ export const pessoasStore = defineStore({
       } catch (error) {
         alertStore.error(this.error);
       }
-      this.isLoading = false;
+      loadStore.close();
     },
     async remover(_user) {
       const alertStore = useAlertStore();
-      this.isLoading = true;
+      const loadStore = useLoadStore();
+      loadStore.show();
       try {
         await fetchWrapper.delete(`${baseUrl}pessoa/remover/${_user.id}`);
         alertStore.success(this.sucesso);
@@ -57,9 +60,11 @@ export const pessoasStore = defineStore({
         const alertStore = useAlertStore();
         alertStore.error(this.error);
       }
+      loadStore.close();
     },
     async getById(_id) {
-      this.isLoading = true;
+      const loadStore = useLoadStore();
+      loadStore.show();
       const alertStore = useAlertStore();
       try {
         const users = await fetchWrapper.get(`${baseUrl}pessoa/buscar/${_id}`);
@@ -67,10 +72,11 @@ export const pessoasStore = defineStore({
       } catch (error) {
         alertStore.error(this.error);
       }
-      this.isLoading = false;
+      loadStore.close();
     },
     async pesquisar(_param) {
-      this.isLoading = true;
+      const loadStore = useLoadStore();
+      loadStore.show();
       const alertStore = useAlertStore();
       try {
         this.pessoas = await fetchWrapper.post(`${baseUrl}pessoa/pesquisar/`, {
@@ -80,10 +86,11 @@ export const pessoasStore = defineStore({
       } catch (error) {
         alertStore.error(this.error);
       }
-      this.isLoading = false;
+      loadStore.close();
     },
     async getAll() {
-      this.isLoading = true;
+      const loadStore = useLoadStore();
+      loadStore.show();
       const alertStore = useAlertStore();
       try {
         this.pessoas = await fetchWrapper.post(`${baseUrl}pessoa/pesquisar`, {
@@ -92,26 +99,30 @@ export const pessoasStore = defineStore({
       } catch (error) {
         alertStore.error(this.error);
       }
-      this.isLoading = false;
+      loadStore.close();
     },
     async setPessoa(_pessoa) {
       this.pessoa = _pessoa;
     },
     async getFoto(_id) {
-        const resp =  await fetchWrapper.get(`${baseUrl}foto/download/${_id}`)
-        return resp
+      const resp = await fetchWrapper.get(`${baseUrl}foto/download/${_id}`);
+      return resp;
     },
     async salvarFoto(id, imagem) {
-      this.isLoading = true;
+      const loadStore = useLoadStore();
+      loadStore.show();
       const alertStore = useAlertStore();
-      try { 
-        const resp = await requestFormData(`${baseUrl}foto/upload/${id}`, imagem)
+      try {
+        const resp = await requestFormData(
+          `${baseUrl}foto/upload/${id}`,
+          imagem
+        );
         alertStore.success(this.sucesso);
-        return resp
+        return resp;
       } catch (error) {
         alertStore.error(this.error);
       }
-      this.isLoading = false;
+      loadStore.close();
     },
-},
+  },
 });
