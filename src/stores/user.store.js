@@ -16,7 +16,7 @@ export const contatoStore = reactive({
       tipoContato: "",
       telefone: "",
       tag: "",
-      privado: boolean,
+      privado: false,
       pessoa: {
         id: 0,
         nome: "",
