@@ -21,7 +21,8 @@ async function limparBusca() {
 }
 function editUser(e) {
   console.log(e.id);
-  router.push(`/usuario/cadastro/${e.id}`)
+  router.push({name:'Novo Cadastro id', params:{id:e.id}})
+  // router.push(`/usuario/cadastro/${e.id}`)
 }
 </script>
 

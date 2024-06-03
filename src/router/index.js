@@ -41,7 +41,7 @@ export const router = createRouter({
     },
     {
       path: '/usuario/cadastro/:id',
-      name: 'Novo Cadastro',
+      name: 'Novo Cadastro id',
       component: () => import('../views/cadastro-usuario.vue')
     },
     {

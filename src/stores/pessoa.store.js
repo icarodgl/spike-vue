@@ -33,21 +33,53 @@ export const pessoasStore = defineStore({
         type: "",
       },
     },
-    isLoading: false,
-  }),
+    }),
   actions: {
-    async salvar(_user) {
+    setPessoa(_pessoa){
+      this.pessoa = _pessoa
+    },
+    novaPessoa(){
+      this.pessoa = {
+        id: 0,
+        nome: "",
+        cpf: "",
+        endereco: {
+          id: 0,
+          logradouro: "",
+          numero: "",
+          cep: "",
+          bairro: "",
+          cidade: "",
+          estado: "",
+          pais: "",
+        },
+        foto: {
+          id: "",
+          name: "",
+          type: "",
+        },
+      };
+      return this.pessoa
+    },
+    async salvar() {
       const loadStore = useLoadStore();
       loadStore.show();
       const alertStore = useAlertStore();
-      const authStore = useAuthStore();
+      let resp = null;
+      if (this.pessoa.id == 0){
+        delete this.pessoa._id
+        delete this.pessoa.foto
+      }
       try {
-        await fetchWrapper.post(`${baseUrl}pessoa/salvar`, _user);
+        resp = (await fetchWrapper.post(`${baseUrl}pessoa/salvar`, this.pessoa)).object;
         alertStore.success(this.sucesso);
       } catch (error) {
         alertStore.error(this.error);
       }
       loadStore.close();
+      if(resp){
+        this.pessoa = resp
+      }
     },
     async remover(_user) {
       const alertStore = useAlertStore();
@@ -67,8 +99,8 @@ export const pessoasStore = defineStore({
       loadStore.show();
       const alertStore = useAlertStore();
       try {
-        const users = await fetchWrapper.get(`${baseUrl}pessoa/buscar/${_id}`);
-        alertStore.success(this.sucesso);
+        const resp = (await fetchWrapper.get(`${baseUrl}pessoa/buscar/${_id}`));
+        this.pessoa = resp.object
       } catch (error) {
         alertStore.error(this.error);
       }
@@ -105,16 +137,18 @@ export const pessoasStore = defineStore({
       this.pessoa = _pessoa;
     },
     async getFoto(_id) {
+      if(_id && _id > 0){
       const resp = await fetchWrapper.get(`${baseUrl}foto/download/${_id}`);
       return resp;
+    }
     },
-    async salvarFoto(id, imagem) {
+    async salvarFoto(imagem) {
       const loadStore = useLoadStore();
       loadStore.show();
       const alertStore = useAlertStore();
       try {
         const resp = await requestFormData(
-          `${baseUrl}foto/upload/${id}`,
+          `${baseUrl}foto/upload/${this.pessoa.id}`,
           imagem
         );
         alertStore.success(this.sucesso);

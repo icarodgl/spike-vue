@@ -23,9 +23,8 @@ async function update() {
   <main class="container">
     <div class="head">
       <h1>Contatos</h1>
-      <router-link to="contato/cadastro/0" class="btn btn-sm btn-success mb-2"
-        ><i class="bi bi-plus-circle"></i> Novo contato</router-link
-      >
+      <router-link to="/pessoas" class="btn btn-sm btn-success mb-2"
+        ><i class="bi bi-plus-circle"></i> Adicionar contato</router-link>
     </div>
 
     <div class="cards">

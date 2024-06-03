@@ -1,173 +1,113 @@
 <script setup>
-import { useRoute } from "vue-router";
-import { contatoStore } from "@/stores/user.store";
-import * as Yup from "yup";
-import { Form } from "vee-validate";
-import {pessoasStore} from "@/stores"
-import FormGroupField from "../components/forms/form-group-field.vue";
-import FormGroupMasked from "../components/forms/form-group-masked.vue";
-import SelectItem from "../components/forms/form-group-select.vue"
+import { storeToRefs } from "pinia";
+import { toRaw } from 'vue'
+import { router } from '@/router';
+import { pessoasStore } from "@/stores";
+import CardPessoa from "./../components/card/card-pessoa.vue";
 const pStore = pessoasStore();
+let { pessoas } = storeToRefs(pStore);
+let _pessoas = toRaw(pessoas)
+let busca = ""
+let buscou = false
+await pStore.getAll()
 
-let user = contatoStore.newContato();
-const route = useRoute();
-
-const schema = Yup.object().shape({
-  nome: Yup.string().required("campo obrigatório"),
-  email: Yup.string().email().required("Email inválido"),
-  tipoContato: Yup.string().required("campo obrigatório"),
-  telefone: Yup.string().required("campo obrigatório"),
-});
-
-async function onSubmit() {
-  await pStore.salvarContato(user)
+async function buscar() {
+  pStore.pesquisar(busca)
+  buscou = true
+}
+async function limparBusca() {
+  pStore.getAll()
+  busca = ""
+  buscou = false
+}
+function editUser(e) {
+  pStore.setPessoa(e)
+  router.push({name:'cadastro pessoas id', params:{id:e.id}})
+}
+function addContato(e){
+  console.log('NOVO CONTATO',e);
 }
 </script>
 
 <template>
-  <div class="container">
-    <Form
-      class="formulario"
-      @submit="onSubmit"
-      :validation-schema="schema"
-      v-slot="{ errors, isSubmitting }"
-    >
-      <div class="basico">
-        <FormGroupField
-          :errors="errors"
-          :dado="user.pessoa.nome"
-          @change="(e) => (user.pessoa.nome = user.usuario.nome = e)"
-          :name="'nome'"
-        ></FormGroupField>
-        <FormGroupField
-          :errors="errors"
-          :dado="user.email || user.pessoa.email"
-          @change="(e) => (user.pessoa.email = user.usuario.email = user.email = e)"
-          :name="'email'"
-        ></FormGroupField>
-        <FormGroupMasked
-          :errors="errors"
-          :dado="user.telefone"
-          @change="(e) => (user.telefone = user.usuario.telefone = e)"
-          :name="'telefone'"
-          :mascara="'telefone'"
-        ></FormGroupMasked>
-        <SelectItem
-          :errors="errors"
-          :dado="user.tipoContato"
-          :options="['TELEFONE','EMAIL','CELULAR']"
-          @change="(e) => (user.tipoContato = e)"
-          :name="'tipoContato'"
-        ></SelectItem>
-        <SelectItem
-          :errors="errors"
-          :dado="user.tag"
-          :options="['PESSOAL','RABALHO']"
-          @change="(e) => (user.tag = e)"
-          :name="'tag'"
-        ></SelectItem>
-      </div>
-      <div class="opcional">
-        <FormGroupMasked
-          :errors="{}"
-          :name="'cpf'"
-          :dado="user.pessoa.cpf"
-          @change="(e) => (user.pessoa.cpf = e)"
-          :mascara="'cpf'"
-        ></FormGroupMasked>
-        <!-- <FormGroupMasked
-          :errors="{}"
-          :name="'dataNascimento'"
-          :dado="user.pessoa.dataNascimento"
-          @change="(e) => (user.pessoa.dataNascimento = e)"
-          :mascara="'data'"
-        ></FormGroupMasked> -->
-      </div>
-      <div class="endereco">
-        <FormGroupField
-          :errors="errors"
-          :dado="user.pessoa.endereco.bairro"
-          @change="(e) => (user.pessoa.endereco.bairro = e)"
-          :name="'bairro'"
-        ></FormGroupField>
-        <FormGroupField
-          :errors="errors"
-          :dado="user.pessoa.endereco.cep"
-          @change="(e) => (user.pessoa.endereco.cep = e)"
-          :name="'cep'"
-        ></FormGroupField>
-        <FormGroupField
-          :errors="errors"
-          :dado="user.pessoa.endereco.cidade"
-          @change="(e) => (user.pessoa.endereco.cidade = e)"
-          :name="'cidade'"
-        ></FormGroupField>
-        <FormGroupField
-          :errors="errors"
-          :dado="user.pessoa.endereco.estado"
-          @change="(e) => (user.pessoa.endereco.estado = e)"
-          :name="'estado'"
-        ></FormGroupField>
-        <FormGroupField
-          :errors="errors"
-          :dado="user.pessoa.endereco.logradouro"
-          @change="(e) => (user.pessoa.endereco.logradouro = e)"
-          :name="'logradouro'"
-        ></FormGroupField>
-        <FormGroupField
-          :errors="errors"
-          :dado="user.pessoa.endereco.numero"
-          @change="(e) => (user.pessoa.endereco.numero = e)"
-          :name="'numero'"
-        ></FormGroupField>
-        <FormGroupField
-          :errors="errors"
-          :dado="user.pessoa.endereco.pais"
-          @change="(e) => (user.pessoa.endereco.pais = e)"
-          :name="'pais'"
-        ></FormGroupField>
+  <main class="container">
+    <div class="head">
+      <h1>Pessoas</h1>
+      <router-link to="pessoas/cadastro/0" class="btn btn-sm btn-success mb-2"><i class="bi bi-plus-circle"></i>
+        Novo</router-link>
+
+      <div class="search input-group mb-3">
+        <input type="text" v-on:keyup.enter="buscar()" v-model="busca" class="form-control" placeholder="Nome"
+          aria-label="Nome" aria-describedby="basic-addon1">
+        <span v-if="buscou && busca !== ''" @click="limparBusca()" class="input-group-text" id="basic-addon2"><i
+            class="bi bi-x-lg"></i></span>
+        <span v-else @click="buscar()" class="input-group-text" id="basic-addon2"><i class="bi bi-search"></i></span>
       </div>
 
-      <button @click="onSubmit()" class="btn btn-primary" :disabled="isSubmitting">
-        cadastrar
-      </button>
-    </Form>
-  </div>
+    </div>
+    <div class="cards">
+      <CardPessoa v-for="p in _pessoas" :add="true" @addContato="addContato" :key="p.id" :pessoa="p" @editar="editUser"></CardPessoa>
+    </div>
+  </main>
 </template>
 
+
 <style scoped>
-.basico,
-.opcional,
-.endereco {
+.search {
+  width: 300px;
+  position: relative;
+  left: 30%;
+  top: 8px;
+}
+
+.btn {
+  height: 34px;
+  margin: 10px 10px 10px 20px;
+}
+
+.container {
   display: flex;
   flex-direction: column;
-  width: 50%;
 }
-.opcional > div,
-.basico > div {
-  margin: 0px 10px 5px 10px;
-}
-.endereco {
+
+.cards {
+  display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+}
+
+.head {
   display: flex;
   flex-direction: row;
+  justify-content: center;
+
 }
-.endereco > div {
-  width: 45%;
-  margin: 0px 10px 5px 10px;
+
+.input-group-text {
+  cursor: pointer
 }
-.formulario {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
+
+h1 {
+  position: absolute;
 }
+
+@media (max-width: 500px) {
+  .search {
+    width: 300px;
+    position: relative;
+    left: 0px;
+    top: 8px;
+  }
+
+}
+
 @media (max-width: 800px) {
-  .basico,
-  .opcional,
-  .endereco {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+  .head {
+    flex-wrap: wrap;
+  }
+
+  h1 {
+    position: relative;
   }
 }
 </style>

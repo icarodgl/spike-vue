@@ -2,8 +2,8 @@
 import { pessoasStore } from "@/stores";
 const pStore = pessoasStore();
 
-const props = defineProps(['pessoa', 'favorito', 'pushTo'])
-const emit = defineEmits(['editar'])
+const props = defineProps(['pessoa', 'favorito', 'pushTo', 'add'])
+const emit = defineEmits(['editar', 'addContato'])
 let foto;
 await updateFoto()
 async function updateFoto() {
@@ -21,6 +21,9 @@ async function remover(pessoa) {
     await pStore.remover(pessoa)
     update()
 }
+function adicionarContato(pessoa) {
+    emit('addContato', pessoa)
+}
 </script>
 
 <template>
@@ -28,7 +31,8 @@ async function remover(pessoa) {
         <div class="foto">
             <picture>
                 <img class="img-thumbnail" v-if="foto" :src="foto" :alt="pessoa.foto?.nome" style="width:auto;">
-                <img class="img-thumbnail" v-else srcset="@/assets/imagens/image.png" alt="foto padrão" style="width:auto;">
+                <img class="img-thumbnail" v-else srcset="@/assets/imagens/image.png" alt="foto padrão"
+                    style="width:auto;">
             </picture>
         </div>
         <div class="head">
@@ -38,8 +42,8 @@ async function remover(pessoa) {
             <div class="head_actions">
                 <div class="btn_acoes">
                     <i @click="edit(pessoa)" class="bi bi-pencil-square"></i>
-
                     <i @click="remover(pessoa)" class="bi bi-trash"></i>
+                    <i v-if="add" @click="adicionarContato(pessoa)" class="bi bi-person-plus"></i>
                 </div>
             </div>
         </div>

@@ -4,7 +4,6 @@ import { fetchWrapper } from "@/helpers";
 import { useAuthStore } from "@/stores";
 import { useAlertStore } from "@/stores";
 
-
 const baseUrl = "https://demometaway.vps-kinghost.net:8485/api/";
 
 export const ContatoStore = defineStore({
@@ -14,39 +13,49 @@ export const ContatoStore = defineStore({
     error: "Registro não pode ser atualizado.",
     users: [],
     favoritos: [],
-    user: {},
-    isLoading:false
+    contato: {
+      email: "",
+      pessoa: {},
+      privado: true,
+      tag: "",
+      telefone: "",
+      tipoContato: "",
+      usuario: {},
+    },
+    isLoading: false,
   }),
   actions: {
-    async salvarContato(user) {
+    async salvarContato(contato) {
       const alertStore = useAlertStore();
       const authStore = useAuthStore();
 
       try {
-        this.isLoading = true
+        this.isLoading = true;
         const authStore = useAuthStore();
 
-        const req = await fetchWrapper.get(`${baseUrl}usuario/buscar/${authStore.user.id}`)
-        user.usuario = req.usuario
-        await fetchWrapper.post(`${baseUrl}contato/salvar`, user);
+        const req = await fetchWrapper.get(
+          `${baseUrl}usuario/buscar/${authStore.user.id}`
+        );
+        contato.usuario = req.user;
+        await fetchWrapper.post(`${baseUrl}contato/salvar`, contato);
       } catch (error) {
         alertStore.error(this.error);
       }
-      this.isLoading = false
+      this.isLoading = false;
     },
-    getLocalById(id){
-      this.user = this.users
+    getLocalById(id) {
+      this.contato = this.users;
     },
     async getFoto(_id) {
-      try { 
-        const resp =  await fetchWrapper.get(`${baseUrl}foto/download/${_id}`)
-        return resp
+      try {
+        const resp = await fetchWrapper.get(`${baseUrl}foto/download/${_id}`);
+        return resp;
       } catch (error) {
         alertStore.error(this.error);
       }
     },
     async getAll() {
-      this.isLoading = true
+      this.isLoading = true;
       const authStore = useAuthStore();
       const alertStore = useAlertStore();
       try {
@@ -56,10 +65,10 @@ export const ContatoStore = defineStore({
       } catch (error) {
         alertStore.error(this.error);
       }
-      this.isLoading = false
+      this.isLoading = false;
     },
     async getfavoritos() {
-      this.isLoading = true
+      this.isLoading = true;
       const alertStore = useAlertStore();
       try {
         this.favoritos = await fetchWrapper.get(`${baseUrl}favorito/pesquisar`);
@@ -67,10 +76,10 @@ export const ContatoStore = defineStore({
         const alertStore = useAlertStore();
         alertStore.error(this.error);
       }
-      this.isLoading = false
+      this.isLoading = false;
     },
     async favoritar(user) {
-      this.isLoading = true
+      this.isLoading = true;
       const alertStore = useAlertStore();
       try {
         await fetchWrapper.post(`${baseUrl}favorito/salvar`, user);
@@ -79,10 +88,10 @@ export const ContatoStore = defineStore({
       } catch (error) {
         alertStore.error(this.error);
       }
-      this.isLoading = false
+      this.isLoading = false;
     },
     async desfavoritar(user) {
-      this.isLoading = true
+      this.isLoading = true;
       const alertStore = useAlertStore();
       try {
         await fetchWrapper.post(`${baseUrl}contato/salvar`, user);
@@ -91,7 +100,7 @@ export const ContatoStore = defineStore({
       } catch (error) {
         alertStore.error(this.error);
       }
-      this.isLoading = false
+      this.isLoading = false;
     },
     async addContato(user) {
       const alertStore = useAlertStore();
@@ -129,7 +138,7 @@ export const ContatoStore = defineStore({
         const users = await fetchWrapper.get(
           `${baseUrl}contato/listar/${authStore.user.id}`
         );
-        this.user = users.find(u => u.id === id)
+        this.contato = users.find((u) => u.id === id);
         //this.user = await fetchWrapper.get(`${baseUrl}pessoa/buscar/${id}`);
         alertStore.success(this.sucesso);
       } catch (error) {
@@ -137,7 +146,7 @@ export const ContatoStore = defineStore({
       }
     },
     async update(id, params) {
-      this.isLoading = true
+      this.isLoading = true;
       const alertStore = useAlertStore();
 
       await fetchWrapper.put(`${baseUrl}/${id}`, params);
@@ -153,10 +162,10 @@ export const ContatoStore = defineStore({
         // update auth user in pinia state
         authStore.user = user;
       }
-      this.isLoading = false
+      this.isLoading = false;
     },
     async delete(id) {
-      this.isLoading = true
+      this.isLoading = true;
       // add isDeleting prop to user being deleted
       this.users.find((x) => x.id === id).isDeleting = true;
 
@@ -170,7 +179,7 @@ export const ContatoStore = defineStore({
       if (id === authStore.user.id) {
         authStore.logout();
       }
-      this.isLoading = false
+      this.isLoading = false;
     },
   },
 });

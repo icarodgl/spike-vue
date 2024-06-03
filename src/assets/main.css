@@ -17,6 +17,7 @@ a,
   padding: 3px;
 }
 
+
 @media (hover: hover) {
   a:hover {
     background-color: hsla(0, 0%, 71%, 0.2);
