@@ -1,21 +1,17 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { ContatoStore } from "@/stores";
+import { contatoStore } from "@/stores";
 import { RouterLink } from "vue-router";
 import { useAlertStore } from "@/stores";
 import Card from "./../components/card/card.vue";
-const contatoStore = ContatoStore();
-const { favoritos, users, isLoading } = storeToRefs(contatoStore);
+const cStore = contatoStore();
+const { favoritos, contatos } = storeToRefs(cStore);
 
 update();
 
-async function createAlert(message, type) {
-  const alertStore = useAlertStore();
-  if (type === "error") alertStore.error(message);
-}
 async function update() {
-  contatoStore.getAll();
-  contatoStore.getfavoritos();
+  cStore.getAll();
+  cStore.getfavoritos();
 }
 </script>
 
@@ -36,7 +32,7 @@ async function update() {
         :pushTo="'contato'"
       ></Card>
       <Card
-        v-for="user in users"
+        v-for="user in contatos"
         :key="user.id"
         :user="user"
         :favorito="false"

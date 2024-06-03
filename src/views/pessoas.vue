@@ -2,9 +2,10 @@
 import { storeToRefs } from "pinia";
 import { toRaw } from 'vue'
 import { router } from '@/router';
-import { pessoasStore } from "@/stores";
+import { pessoasStore, contatoStore } from "@/stores";
 import CardPessoa from "./../components/card/card-pessoa.vue";
 const pStore = pessoasStore();
+const cStore = contatoStore();
 let { pessoas } = storeToRefs(pStore);
 let _pessoas = toRaw(pessoas)
 let busca = ""
@@ -22,10 +23,12 @@ async function limparBusca(){
 }
 function editUser(e) {
   pStore.setPessoa(e)
-  router.push(`/pessoas/cadastro/${e.id}`)
+  router.push({path:`/pessoas/cadastro/${e.id}`})
 }
 function addContato(e){
-  console.log('NOVO CONTATO',e);
+   router.push({path: `/contato/cadastro/${e.id}`})
+  // router.push({name:'cadastroId' ,params: {id: e.id}})
+  // cStore.salvarContato(e);
 }
 </script>
 

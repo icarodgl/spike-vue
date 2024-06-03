@@ -1,6 +1,6 @@
 import { reactive } from "vue";
 
-export const contatoStore = reactive({
+export const contatoLocalStore = reactive({
   contato: {},
   async setContato(user) {
     localStorage.setItem("contato", JSON.stringify(user));

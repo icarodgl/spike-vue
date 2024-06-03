@@ -6,13 +6,13 @@ import { useAlertStore } from "@/stores";
 
 const baseUrl = "https://demometaway.vps-kinghost.net:8485/api/";
 
-export const ContatoStore = defineStore({
+export const contatoStore = defineStore({
   id: "contato",
   state: () => ({
     sucesso: "Operação realizada com sucesso.",
     error: "Registro não pode ser atualizado.",
-    users: [],
-    favoritos: [],
+    contatos:[],
+    favoritos:[],
     contato: {
       email: "",
       pessoa: {},
@@ -22,46 +22,32 @@ export const ContatoStore = defineStore({
       tipoContato: "",
       usuario: {},
     },
-    isLoading: false,
   }),
   actions: {
-    async salvarContato(contato) {
+    async salvarContato(pessoa) {
       const alertStore = useAlertStore();
       const authStore = useAuthStore();
-
       try {
         this.isLoading = true;
-        const authStore = useAuthStore();
-
         const req = await fetchWrapper.get(
           `${baseUrl}usuario/buscar/${authStore.user.id}`
         );
-        contato.usuario = req.user;
-        await fetchWrapper.post(`${baseUrl}contato/salvar`, contato);
+        this.contato.usuario = req.object.usuario;
+        this.contato.pessoa = pessoa
+        await fetchWrapper.post(`${baseUrl}contato/salvar`, this.contato);
       } catch (error) {
         alertStore.error(this.error);
       }
       this.isLoading = false;
     },
-    getLocalById(id) {
-      this.contato = this.users;
-    },
-    async getFoto(_id) {
-      try {
-        const resp = await fetchWrapper.get(`${baseUrl}foto/download/${_id}`);
-        return resp;
-      } catch (error) {
-        alertStore.error(this.error);
-      }
-    },
+
     async getAll() {
       this.isLoading = true;
       const authStore = useAuthStore();
       const alertStore = useAlertStore();
       try {
-        this.users = await fetchWrapper.get(
-          `${baseUrl}contato/listar/${authStore.user.id}`
-        );
+        this.contatos = await fetchWrapper.post(`${baseUrl}contato/pesquisar/`,{"termo": ""});
+        // this.contatos = await fetchWrapper.get(`${baseUrl}contato/listar/${authStore.user.id}`);
       } catch (error) {
         alertStore.error(this.error);
       }
@@ -130,56 +116,6 @@ export const ContatoStore = defineStore({
         const alertStore = useAlertStore();
         alertStore.error(this.error);
       }
-    },
-    async getById(id) {
-      const alertStore = useAlertStore();
-      try {
-        const authStore = useAuthStore();
-        const users = await fetchWrapper.get(
-          `${baseUrl}contato/listar/${authStore.user.id}`
-        );
-        this.contato = users.find((u) => u.id === id);
-        //this.user = await fetchWrapper.get(`${baseUrl}pessoa/buscar/${id}`);
-        alertStore.success(this.sucesso);
-      } catch (error) {
-        alertStore.error(this.error);
-      }
-    },
-    async update(id, params) {
-      this.isLoading = true;
-      const alertStore = useAlertStore();
-
-      await fetchWrapper.put(`${baseUrl}/${id}`, params);
-      alertStore.success(this.sucesso);
-
-      // update stored user if the logged in user updated their own record
-      const authStore = useAuthStore();
-      if (id === authStore.user.id) {
-        // update local storage
-        const user = { ...authStore.user, ...params };
-        localStorage.setItem("user", JSON.stringify(user));
-
-        // update auth user in pinia state
-        authStore.user = user;
-      }
-      this.isLoading = false;
-    },
-    async delete(id) {
-      this.isLoading = true;
-      // add isDeleting prop to user being deleted
-      this.users.find((x) => x.id === id).isDeleting = true;
-
-      await fetchWrapper.delete(`${baseUrl}/${id}`);
-
-      // remove user from list after deleted
-      this.users = this.users.filter((x) => x.id !== id);
-
-      // auto logout if the logged in user deleted their own record
-      const authStore = useAuthStore();
-      if (id === authStore.user.id) {
-        authStore.logout();
-      }
-      this.isLoading = false;
     },
   },
 });

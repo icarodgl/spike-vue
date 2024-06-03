@@ -1,6 +1,5 @@
 
 <script setup>
-import { Field } from "vee-validate";
 const props = defineProps(["name", "errors", "dado", "options"]);
 defineEmits(["change"]);
 </script>
@@ -16,7 +15,7 @@ defineEmits(["change"]);
       <option disabled value="">Selecione</option>
       <option v-for="(item, index) in options" :key="index">{{ item }}</option>
     </select>
-    <div class="invalid-feedback">{{ errors.nome }}</div>
+    <div class="invalid-feedback">{{ errors[name] }}</div>
   </div>
 </template>
 

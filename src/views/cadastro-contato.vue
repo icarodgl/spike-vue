@@ -1,113 +1,114 @@
 <script setup>
-import { storeToRefs } from "pinia";
-import { toRaw } from 'vue'
+import * as Yup from "yup";
+import { Form } from "vee-validate";
+import { storeToRefs } from 'pinia'
+import { pessoasStore } from "@/stores"
+import FormGroupField from "@/components/forms/form-group-field.vue";
+import FormGroupMasked from "@/components/forms/form-group-masked.vue";
+import FormGroupSelect from "@/components/forms/form-group-select.vue";
+import FormGroupSwitch from "@/components/forms/form-group-switch.vue"
+import CardPessoa from "@/components/card/card-pessoa.vue";
 import { router } from '@/router';
-import { pessoasStore } from "@/stores";
-import CardPessoa from "./../components/card/card-pessoa.vue";
-const pStore = pessoasStore();
-let { pessoas } = storeToRefs(pStore);
-let _pessoas = toRaw(pessoas)
-let busca = ""
-let buscou = false
-await pStore.getAll()
+import { useRoute } from 'vue-router';
+import { contatoStore } from "@/stores";
 
-async function buscar() {
-  pStore.pesquisar(busca)
-  buscou = true
+const route = useRoute();
+const pStore = pessoasStore()
+const cStore = contatoStore()
+const { pessoa } = storeToRefs(pStore);
+const { contato } = storeToRefs(cStore);
+let foto;
+const tipoContatoOptions = ['CELULAR', 'EMAIL', 'TELEFONE']
+
+const schema = Yup.object().shape({
+  nome: Yup.string().required("campo obrigatório"),
+  email: Yup.string().email().required("Email inválido"),
+});
+
+if (route.params.id == '0') {
+  pStore.novaPessoa()
+} else {
+  pStore.getById(route.params.id)
 }
-async function limparBusca() {
-  pStore.getAll()
-  busca = ""
-  buscou = false
+async function onSubmit() {
+  await cStore.salvarContato(pStore.pessoa)
 }
-function editUser(e) {
-  pStore.setPessoa(e)
-  router.push({name:'cadastro pessoas id', params:{id:e.id}})
-}
-function addContato(e){
-  console.log('NOVO CONTATO',e);
-}
+
+
 </script>
 
 <template>
-  <main class="container">
-    <div class="head">
-      <h1>Pessoas</h1>
-      <router-link to="pessoas/cadastro/0" class="btn btn-sm btn-success mb-2"><i class="bi bi-plus-circle"></i>
-        Novo</router-link>
+  <div class="container">
+    <RouterLink to="/pessoas" class="voltar"><i class="bi bi-arrow-left"></i>Voltar</RouterLink>
+    <div class="contato">
+      <CardPessoa class="contato_card" :pessoa="pessoa"></CardPessoa>
+    </div>
+    <Form class="formulario" @submit="onSubmit" :validation-schema="schema" v-slot="{ errors, isSubmitting }">
+      <div class="basico">
+        <FormGroupSwitch :errors="errors" :dado="contato.privado" @change="(e) => (contato.privado = contato.privado = e)" :name="'Privado'"
+        ></FormGroupSwitch>
 
-      <div class="search input-group mb-3">
-        <input type="text" v-on:keyup.enter="buscar()" v-model="busca" class="form-control" placeholder="Nome"
-          aria-label="Nome" aria-describedby="basic-addon1">
-        <span v-if="buscou && busca !== ''" @click="limparBusca()" class="input-group-text" id="basic-addon2"><i
-            class="bi bi-x-lg"></i></span>
-        <span v-else @click="buscar()" class="input-group-text" id="basic-addon2"><i class="bi bi-search"></i></span>
+        <FormGroupField :errors="errors" :dado="contato.tag" @change="(e) => (contato.tag = contato.tag = e)" :name="'Tag'">
+        </FormGroupField>
+        <FormGroupSelect :errors="errors" :dado="contato.tipoContato" :options="tipoContatoOptions"
+          @change="(e) => (contato.tipoContato = contato.tipoContato = e)" :name="'Tipo de Contato'">
+        </FormGroupSelect>
+        <FormGroupField :errors="errors" :dado="contato.email" @change="(e) => (contato.email = e)"
+          :name="'email'"></FormGroupField>
+        <FormGroupMasked :errors="errors" :dado="contato.telefone" @change="(e) => (contato.telefone = e)" :name="'telefone'"
+          :mascara="'telefone'"></FormGroupMasked>
       </div>
 
-    </div>
-    <div class="cards">
-      <CardPessoa v-for="p in _pessoas" :add="true" @addContato="addContato" :key="p.id" :pessoa="p" @editar="editUser"></CardPessoa>
-    </div>
-  </main>
+      <button @click="onSubmit()" class="btn btn-primary" :disabled="isSubmitting">
+        cadastrar
+      </button>
+    </Form>
+  </div>
 </template>
 
-
 <style scoped>
-.search {
+.contato_card :deep(.head_actions) {
+  display: none;
+}
+
+.voltar {
+  cursor: pointer;
+}
+
+.bi-arrow-left {
+  margin-right: 5px
+}
+
+.contato {
+  justify-content: center;
+  display: flex;
+
+}
+
+.contato_card {
   width: 300px;
-  position: relative;
-  left: 30%;
-  top: 8px;
+
 }
 
-.btn {
-  height: 34px;
-  margin: 10px 10px 10px 20px;
-}
-
-.container {
+.formulario {
+  align-items: center;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
-.cards {
+.basico {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.head {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-
-}
-
-.input-group-text {
-  cursor: pointer
-}
-
-h1 {
-  position: absolute;
-}
-
-@media (max-width: 500px) {
-  .search {
-    width: 300px;
-    position: relative;
-    left: 0px;
-    top: 8px;
-  }
-
+  flex-direction: column;
+  width: 30%;
 }
 
 @media (max-width: 800px) {
-  .head {
-    flex-wrap: wrap;
-  }
 
-  h1 {
-    position: relative;
+  .basico {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 }
 </style>
