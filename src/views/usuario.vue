@@ -4,8 +4,7 @@ import { router } from '@/router';
 import { usuarioStore } from "@/stores";
 import CardUser from "./../components/card/card-user.vue";
 const uStore = usuarioStore();
-const { users } = storeToRefs(uStore);
-let _usuarios = users
+const { usuarios } = storeToRefs(uStore);
 let busca = ""
 let buscou = false
 await uStore.getAll()
@@ -39,7 +38,7 @@ function editUser(e) {
 
     </div>
     <div class="cards">
-      <CardUser v-for="u in _usuarios" :key="u.id" :user="u" @editar="editUser"></CardUser>
+      <CardUser v-for="u in usuarios" :key="u.id" :user="u" @editar="editUser"></CardUser>
     </div>
   </main>
 </template>

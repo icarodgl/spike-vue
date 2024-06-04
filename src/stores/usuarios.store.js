@@ -6,7 +6,7 @@ import { useAlertStore as alertStore } from "@/stores";
 
 const baseUrl = "https://demometaway.vps-kinghost.net:8485/api/";
 
-export const pessoasStore = defineStore({
+export const usuarioStore = defineStore({
   id: "usuarios",
   state: () => ({
     sucesso: "Operação realizada com sucesso.",
@@ -64,7 +64,7 @@ export const pessoasStore = defineStore({
         this.usuarios = await fetchWrapper.post(
           `${baseUrl}usuario/pesquisar/`,
           {
-            nome: _param,
+            termo: _param,
           }
         );
         alertStore.success(this.sucesso);
@@ -75,7 +75,7 @@ export const pessoasStore = defineStore({
     async getAll() {
       try {
         this.usuarios = await fetchWrapper.post(`${baseUrl}usuario/pesquisar`, {
-          nome: "",
+          termo: "",
         });
       } catch (error) {
         alertStore.error(this.error);

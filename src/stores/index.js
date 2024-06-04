@@ -6,3 +6,4 @@ export * from "./pessoa.store";
 export * from "./meu-cadastro.store"
 export * from "./contato.store"
 export * from "./foto.store"
+export * from "./usuarios.store"

@@ -7,8 +7,8 @@ import {useLoadStore as loadStore} from "@/stores"
 
 const baseUrl = "https://demometaway.vps-kinghost.net:8485/api/";
 
-export const usuarioStore = defineStore({
-  id: "usuarios",
+export const usersStore = defineStore({
+  id: "users",
   state: () => ({
     sucesso: "Operação realizada com sucesso.",
     error: "Registro não pode ser atualizado.",
@@ -32,9 +32,6 @@ export const usuarioStore = defineStore({
         alertStore.error(this.error);
       }
        loadStore.close();
-    },
-    getLocalById(id){
-      this.user = this.users
     },
     async getFoto(_id) {
       try { 

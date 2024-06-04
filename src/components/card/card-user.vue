@@ -11,7 +11,8 @@ async function editUser(user){
     <div class="card">
         <div class="head">
             <div class="head_info">
-                <div class="nome">{{ user.nome }}</div>
+                
+                <div class="nome">{{ user.id }} {{ user.nome }}</div>
             </div>
             <div class="head_actions">
                 <div class="btn_acoes">
