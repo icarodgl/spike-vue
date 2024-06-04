@@ -2,7 +2,6 @@
 import { storeToRefs } from "pinia";
 import { contatoStore } from "@/stores";
 import { RouterLink } from "vue-router";
-import { useAlertStore } from "@/stores";
 import Card from "./../components/card/card.vue";
 const cStore = contatoStore();
 const { favoritos, contatos } = storeToRefs(cStore);
@@ -20,7 +19,7 @@ async function update() {
     <div class="head">
       <h1>Contatos</h1>
       <router-link to="/pessoas" class="btn btn-sm btn-success mb-2"
-        ><i class="bi bi-plus-circle"></i> Adicionar contato</router-link>
+        ><i class="bi bi-plus-circle"></i> Novo Contato</router-link>
     </div>
 
     <div class="cards">

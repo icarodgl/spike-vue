@@ -1,7 +1,8 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import {useLoadStore} from "../../stores/load.store"
-const {isLoading} = storeToRefs(useLoadStore);
+import {useLoadStore} from "@/stores"
+const lStore = useLoadStore()
+const {isLoading} = storeToRefs(lStore);
 </script>
 
 <template>

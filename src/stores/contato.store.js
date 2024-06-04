@@ -46,8 +46,7 @@ export const contatoStore = defineStore({
       const authStore = useAuthStore();
       const alertStore = useAlertStore();
       try {
-        this.contatos = await fetchWrapper.post(`${baseUrl}contato/pesquisar/`,{"termo": ""});
-        // this.contatos = await fetchWrapper.get(`${baseUrl}contato/listar/${authStore.user.id}`);
+        this.contatos = await fetchWrapper.get(`${baseUrl}contato/listar/${authStore.user.id}`);
       } catch (error) {
         alertStore.error(this.error);
       }

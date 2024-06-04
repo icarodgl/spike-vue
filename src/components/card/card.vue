@@ -21,11 +21,7 @@ async function desfavoritar(user){
 }
 
 async function editUser(user){
-  router.push(`${props.pushTo}/contato/cadastro/${user.id}`)
-}
-
-async function novoContato(){
-  router.push(`${props.pushTo}/contato/cadastro/0`)
+  router.push({path:`/contato/cadastro/${user.id}`})
 }
 
 async function update(){

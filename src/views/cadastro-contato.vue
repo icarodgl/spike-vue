@@ -8,7 +8,6 @@ import FormGroupMasked from "@/components/forms/form-group-masked.vue";
 import FormGroupSelect from "@/components/forms/form-group-select.vue";
 import FormGroupSwitch from "@/components/forms/form-group-switch.vue"
 import CardPessoa from "@/components/card/card-pessoa.vue";
-import { router } from '@/router';
 import { useRoute } from 'vue-router';
 import { contatoStore } from "@/stores";
 
@@ -17,7 +16,6 @@ const pStore = pessoasStore()
 const cStore = contatoStore()
 const { pessoa } = storeToRefs(pStore);
 const { contato } = storeToRefs(cStore);
-let foto;
 const tipoContatoOptions = ['CELULAR', 'EMAIL', 'TELEFONE']
 
 const schema = Yup.object().shape({

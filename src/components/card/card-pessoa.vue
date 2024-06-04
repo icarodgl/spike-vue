@@ -1,13 +1,13 @@
 <script setup>
-import { pessoasStore } from "@/stores";
+import { pessoasStore, fotoStore } from "@/stores";
 const pStore = pessoasStore();
-
+const poStore = fotoStore()
 const props = defineProps(['pessoa', 'favorito', 'pushTo', 'add'])
 const emit = defineEmits(['editar', 'addContato'])
 let foto;
 await updateFoto()
 async function updateFoto() {
-    foto = await pStore.getFoto(props.pessoa.id)
+    foto = await poStore.getFoto(props.pessoa.id)
 }
 async function edit(pessoa) {
     pStore.setPessoa(pessoa)
