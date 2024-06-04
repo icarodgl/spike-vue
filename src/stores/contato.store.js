@@ -33,9 +33,9 @@ export const contatoStore = defineStore({
         this.contato.usuario = req.object.usuario;
         this.contato.pessoa = pessoa;
         await fetchWrapper.post(`${baseUrl}contato/salvar`, this.contato);
-        alertStore.error(this.sucesso);
+        useAlertStore.error(this.sucesso);
       } catch (error) {
-        alertStore.error(this.error);
+        useAlertStore.error(this.error);
       }
       useLoadStore.close();
     },
@@ -48,56 +48,56 @@ export const contatoStore = defineStore({
           `${baseUrl}contato/listar/${authStore.user.id}`
         );
       } catch (error) {
-        alertStore.error(this.error);
+        useAlertStore.error(this.error);
       }
     },
     async getfavoritos() {
       try {
         this.favoritos = await fetchWrapper.get(`${baseUrl}favorito/pesquisar`);
       } catch (error) {
-        alertStore.error(this.error);
+        useAlertStore.error(this.error);
       }
     },
     async favoritar(user) {
       try {
         await fetchWrapper.post(`${baseUrl}favorito/salvar`, user);
         await fetchWrapper.delete(`${baseUrl}contato/remover/${user.id}`);
-        alertStore.success(this.sucesso);
+        useAlertStore.success(this.sucesso);
       } catch (error) {
-        alertStore.error(this.error);
+        useAlertStore.error(this.error);
       }
     },
     async desfavoritar(user) {
       try {
         await fetchWrapper.post(`${baseUrl}contato/salvar`, user);
         await fetchWrapper.delete(`${baseUrl}favorito/remover/${user.id}`);
-        alertStore.success(this.sucesso);
+        useAlertStore.success(this.sucesso);
       } catch (error) {
-        alertStore.error(this.error);
+        useAlertStore.error(this.error);
       }
     },
     async addContato(user) {
       try {
         await fetchWrapper.post(`${baseUrl}contato/salvar`, user);
-        alertStore.success(this.sucesso);
+        useAlertStore.success(this.sucesso);
       } catch (error) {
-        alertStore.error(this.error);
+        useAlertStore.error(this.error);
       }
     },
     async removeFavorito(user) {
       try {
         await fetchWrapper.delete(`${baseUrl}favorito/remover/${user.id}`);
-        alertStore.success(this.sucesso);
+        useAlertStore.success(this.sucesso);
       } catch (error) {
-        alertStore.error(this.error);
+        useAlertStore.error(this.error);
       }
     },
     async removeContato(user) {
       try {
         await fetchWrapper.delete(`${baseUrl}contato/remover/${user.id}`);
-        alertStore.success(this.sucesso);
+        useAlertStore.success(this.sucesso);
       } catch (error) {
-        alertStore.error(this.error);
+        useAlertStore.error(this.error);
       }
     },
   },
