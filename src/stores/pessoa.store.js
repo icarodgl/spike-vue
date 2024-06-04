@@ -62,7 +62,7 @@ export const pessoasStore = defineStore({
     },
     async salvar() {
       useLoadStore.show();
-      
+    
       let resp = null;
       if (this.pessoa.id == 0){
         delete this.pessoa._id

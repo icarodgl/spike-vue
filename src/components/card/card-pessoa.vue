@@ -37,7 +37,7 @@ function adicionarContato(pessoa) {
         </div>
         <div class="head">
             <div class="head_info">
-                <div class="nome">{{ pessoa.id }} - {{ pessoa.nome }}</div>
+                <div class="nome">{{ pessoa.nome }}</div>
             </div>
             <div class="head_actions">
                 <div class="btn_acoes">
@@ -47,7 +47,16 @@ function adicionarContato(pessoa) {
                 </div>
             </div>
         </div>
-        <div class="cpf">CPF: {{ pessoa.cpf }}</div>
+        <div v-if="pessoa.email" class="email">Email: {{ pessoa.email }}</div>
+        <div v-if="pessoa.cpf" class="cpf">CPF: {{ pessoa.cpf }}</div>
+        <div v-if="pessoa.endereco.logradouro ||pessoa.endereco.bairro || pessoa.endereco.cidade || pessoa.endereco.estado" class="endereco">
+            Endereço:
+            <span v-if="pessoa.endereco.logradouro">{{ pessoa.endereco.logradouro }}, </span>
+            <span v-if="pessoa.endereco.numero">{{ pessoa.endereco.numero }},</span>
+            <span v-if="pessoa.endereco.bairro">{{ pessoa.endereco.bairro }}</span>
+            <span v-if="pessoa.endereco.cidade">, {{ pessoa.endereco.cidade }}</span>
+            <span v-if="pessoa.endereco.estado">/{{ pessoa.endereco.estado }}</span>
+        </div>
     </div>
 </template>
 
@@ -73,7 +82,7 @@ picture>img {
 .card {
     padding: 10px;
     margin: 5px;
-    min-width: 300px;
+    width: 300px;
 }
 
 .btn_acoes {

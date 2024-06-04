@@ -6,7 +6,7 @@ export const useLoadStore = reactive({
     this.isLoading = true;
     setTimeout(() => {
       this.isLoading = false;
-    }, 60000);
+    }, 10000);
   },
  async close() {
     this.isLoading = false;

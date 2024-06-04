@@ -82,7 +82,6 @@ function addContato(e){
 .cards {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
 }
 
 .head {
@@ -101,9 +100,13 @@ function addContato(e){
   left: 0px;
   top: 8px;
 }
-
 }
 @media (max-width: 800px) {
+  .cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
   .head{
     flex-wrap: wrap;
   }

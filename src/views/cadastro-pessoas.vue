@@ -19,11 +19,9 @@ let foto;
 if(route.params.id == '0'){
    pStore.novaPessoa()
 }else{
-  pStore.getById(route.params.id)
+  await pStore.getById(route.params.id)
+  await updateFoto()
 }
-
-await updateFoto()
-
 async function updateFoto() {
   if(pStore.pessoa.id){
     foto = await poStore.getFoto(pStore.pessoa.id)

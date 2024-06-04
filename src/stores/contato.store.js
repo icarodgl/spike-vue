@@ -76,9 +76,9 @@ export const contatoStore = defineStore({
         useAlertStore.error(this.error);
       }
     },
-    async addContato(user) {
+    async updateContato(contato) {
       try {
-        await fetchWrapper.post(`${baseUrl}contato/salvar`, user);
+        await fetchWrapper.post(`${baseUrl}contato/salvar`, contato);
         useAlertStore.success(this.sucesso);
       } catch (error) {
         useAlertStore.error(this.error);

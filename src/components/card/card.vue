@@ -11,15 +11,22 @@ await updateFoto()
 async function updateFoto() {
     foto = await pStore.getFoto(props.user?.pessoa?.id)
 }
-async function favoritar(user){
-  await contatoS.favoritar(user)
+async function favoritar(contato){
+  await contatoS.favoritar(contato)
   update()
 }
-async function desfavoritar(user){
-   await contatoS.desfavoritar(user)
+async function desfavoritar(contato){
+   await contatoS.desfavoritar(contato)
   update()
 }
-
+async function privar(contato){
+    contato.privado = !contato.privado
+    await contatoS.updateContato(contato)
+}
+async function desprivar(contato){
+    contato.privado = !contato.privado
+    await contatoS.updateContato(contato)
+}
 async function editUser(user){
   router.push({path:`/contato/cadastro/${user.id}`})
 }
@@ -48,7 +55,7 @@ async function remover(user){
         </div>
         <div class="head">
             <div class="head_info">
-                <div class=" tag">{{ user.id }} {{ user.tipoContato }} - {{ user.tag }}</div>
+                <div class=" tag">{{ user.tipoContato }} - {{ user.tag }}</div>
                 <div class="nome">{{ user.pessoa?.nome }}</div>
             </div>
             <div class="head_actions">
@@ -61,8 +68,8 @@ async function remover(user){
                     <i v-else @click="favoritar(user)" class="bi bi-star"></i>
                 </div>
                 <div class="privado">
-                    <i v-if="user.privado" class="bi bi-lock-fill"></i>
-                    <i v-else class="bi bi-lock"></i>
+                    <i v-if="user.privado" @click="privar(user)" class="bi bi-lock-fill"></i>
+                    <i v-else @click="desprivar(user)" class="bi bi-lock"></i>
                 </div>
             </div>
         </div>

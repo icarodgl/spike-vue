@@ -6,12 +6,12 @@ export const useAlertStore = reactive({
     success(message) {
         this.alert = { message, type: 'alert-success' };
         this.isActive = true;
-        setTimeout(()=>{this.isActive = false},10000)
+        setTimeout(()=>{this.isActive = false},5000)
     },
     error(message) {
         this.alert = { message, type: 'alert-danger' };
         this.isActive = true;
-        setTimeout(()=>{this.isActive = false},10000)
+        setTimeout(()=>{this.isActive = false},5000)
     },
     clear() {
         this.isActive = false;

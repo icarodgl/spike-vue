@@ -94,6 +94,11 @@ h1 {
 }
 
 @media (max-width: 800px) {
+  .cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
   .head {
     flex-wrap: wrap;
   }

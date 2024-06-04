@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { fetchWrapper } from "@/helpers";
+import { fetchWrapper,requestFormData } from "@/helpers";
 import { useAlertStore } from "@/stores";
 import { useLoadStore } from "@/stores";
 
@@ -27,9 +27,13 @@ export const fotoStore = defineStore({
         useAlertStore.success(this.sucesso);
         return resp;
       } catch (error) {
+        console.log(error);
         useAlertStore.error(this.error);
+      }finally
+      {
+        useLoadStore.close();
       }
-      useLoadStore.close();
+      
     },
   },
 });
