@@ -3,7 +3,8 @@ import { Form, Field } from 'vee-validate';
 import * as Yup from 'yup';
 
 import { useAuthStore } from '@/stores';
-
+let user = ''
+let pass = ''
 const schema = Yup.object().shape({
     username: Yup.string().required('Usuário é obrigatório.'),
     password: Yup.string().required('Senha é obrigatório.')
@@ -23,16 +24,16 @@ async function onSubmit(values) {
       <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ errors, isSubmitting }">
         <div class="form-group">
           <label>Login</label>
-          <Field name="username" type="text" class="form-control" :class="{ 'is-invalid': errors.username }" />
+          <Field name="username" type="text" v-model="user" class="form-control" :class="{ 'is-invalid': errors.username }" />
           <div class="invalid-feedback">{{ errors.username }}</div>
         </div>
           <div class="form-group">
             <label>Senha</label>
-            <Field name="password" type="password" class="form-control" :class="{ 'is-invalid': errors.password }" />
+            <Field name="password" v-model="pass" type="password" class="form-control" :class="{ 'is-invalid': errors.password }" />
             <div class="invalid-feedback">{{ errors.password }}</div>
           </div>
           <div class="form-group btn-login">
-            <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
+            <button type="submit" class="btn btn-primary" :disabled="isSubmitting || (user.length === 0 || pass.length === 0)">
               Login <span v-show="isSubmitting" class="spinner-border spinner-border-sm mr-1"></span>
             </button>
           </div>

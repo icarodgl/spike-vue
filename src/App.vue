@@ -3,6 +3,8 @@ import { RouterView } from 'vue-router'
 import navBar from './components/navbar/navbar.vue'
 import Alert  from './components/alert/Alert.vue';
 import loading from './components/loading/loading.vue'
+import {useLoadStore} from "@/stores"
+
 </script>
 
 <template>
@@ -12,8 +14,8 @@ import loading from './components/loading/loading.vue'
   </header>
   <Suspense>
     <main>
-      <loading></loading>
-        <RouterView />
+      <loading v-if="useLoadStore.isLoading"></loading>
+      <RouterView/>
     </main>
 
   <template #fallback>

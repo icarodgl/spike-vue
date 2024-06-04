@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 
-import { fetchWrapper , requestFormData} from "@/helpers";
+import { fetchWrapper, requestFormData } from "@/helpers";
 import { useAuthStore } from "@/stores";
-import { useAlertStore } from "@/stores";
+import { useAlertStore as alertStore } from "@/stores";
 
 const baseUrl = "https://demometaway.vps-kinghost.net:8485/api/";
 
@@ -32,12 +32,9 @@ export const pessoasStore = defineStore({
         type: "",
       },
     },
-    isLoading: false,
   }),
   actions: {
     async salvar(_user) {
-      this.isLoading = true;
-      const alertStore = useAlertStore();
       const authStore = useAuthStore();
       try {
         await fetchWrapper.post(`${baseUrl}usuario/salvar`, _user);
@@ -45,46 +42,37 @@ export const pessoasStore = defineStore({
       } catch (error) {
         alertStore.error(this.error);
       }
-      this.isLoading = false;
     },
     async remover(_user) {
-      const alertStore = useAlertStore();
-      this.isLoading = true;
       try {
         await fetchWrapper.delete(`${baseUrl}usuario/remover/${_user.id}`);
         alertStore.success(this.sucesso);
       } catch (error) {
-        const alertStore = useAlertStore();
         alertStore.error(this.error);
       }
     },
     async getById(_id) {
-      this.isLoading = true;
-      const alertStore = useAlertStore();
       try {
         const users = await fetchWrapper.get(`${baseUrl}usuario/buscar/${_id}`);
         alertStore.success(this.sucesso);
       } catch (error) {
         alertStore.error(this.error);
       }
-      this.isLoading = false;
     },
     async pesquisar(_param) {
-      this.isLoading = true;
-      const alertStore = useAlertStore();
       try {
-        this.usuarios = await fetchWrapper.post(`${baseUrl}usuario/pesquisar/`, {
-          nome: _param,
-        });
+        this.usuarios = await fetchWrapper.post(
+          `${baseUrl}usuario/pesquisar/`,
+          {
+            nome: _param,
+          }
+        );
         alertStore.success(this.sucesso);
       } catch (error) {
         alertStore.error(this.error);
       }
-      this.isLoading = false;
     },
     async getAll() {
-      this.isLoading = true;
-      const alertStore = useAlertStore();
       try {
         this.usuarios = await fetchWrapper.post(`${baseUrl}usuario/pesquisar`, {
           nome: "",
@@ -92,10 +80,9 @@ export const pessoasStore = defineStore({
       } catch (error) {
         alertStore.error(this.error);
       }
-      this.isLoading = false;
     },
     async setPessoa(_pessoa) {
       this.usuario = _pessoa;
     },
-},
+  },
 });

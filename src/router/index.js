@@ -57,7 +57,7 @@ export const router = createRouter({
     {
       path: '/contatos',
       name: 'contatos',
-      component: () => import('../views/contatos.vue')
+      component: () => import('../views/home.vue')
     },
     {
       path: '/contato/cadastro',
@@ -73,8 +73,7 @@ export const router = createRouter({
   ]
 })
 router.beforeEach(async (to) => {
-  const alertStore = useAlertStore();
-  alertStore.clear();
+  useAlertStore.clear();
 
   // redirect to login page if not logged in and trying to access a restricted page 
   const publicPages = ['/login'];

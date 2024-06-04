@@ -1,32 +1,30 @@
 <script setup>
-import { storeToRefs } from "pinia";
-import {useLoadStore} from "@/stores"
-const lStore = useLoadStore()
-const {isLoading} = storeToRefs(lStore);
 </script>
 
 <template>
-    <div v-if="isLoading" class="loading">
-    <span  class="spinner-border spinner-border-lg align-center"></span>
+    <div class="loading">
+        <span class="spinner-border spinner-border-lg align-center"></span>
     </div>
 </template>
 
 <style>
-.loading{
+.loading {
     position: absolute;
     z-index: 99;
-    background-color: #ffffff1a;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    top: 0;
     left: 0;
+    background-color: var(--color-background);
 }
-.spinner-border{
-    color: black;
+
+.spinner-border {
+    color: rgb(255, 255, 255);
     height: 100px;
     width: 100px;
+    position: absolute;
+    top: 100px;
 }
 </style>

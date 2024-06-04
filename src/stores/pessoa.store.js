@@ -1,9 +1,8 @@
 import { defineStore } from "pinia";
 
-import { fetchWrapper, requestFormData } from "@/helpers";
-import { useAuthStore } from "@/stores";
+import { fetchWrapper} from "@/helpers";
 import { useAlertStore } from "@/stores";
-import { useLoadStore } from "@/stores";
+import { useLoadStore} from "@/stores";
 
 const baseUrl = "https://demometaway.vps-kinghost.net:8485/api/";
 
@@ -62,9 +61,8 @@ export const pessoasStore = defineStore({
       return this.pessoa
     },
     async salvar() {
-      const loadStore = useLoadStore();
-      loadStore.show();
-      const alertStore = useAlertStore();
+      useLoadStore.show();
+      
       let resp = null;
       if (this.pessoa.id == 0){
         delete this.pessoa._id
@@ -72,91 +70,64 @@ export const pessoasStore = defineStore({
       }
       try {
         resp = (await fetchWrapper.post(`${baseUrl}pessoa/salvar`, this.pessoa)).object;
-        alertStore.success(this.sucesso);
+        useAlertStore.success(this.sucesso);
       } catch (error) {
-        alertStore.error(this.error);
+        useAlertStore.error(this.error);
       }
-      loadStore.close();
+      useLoadStore.close();
       if(resp){
         this.pessoa = resp
       }
     },
     async remover(_user) {
-      const alertStore = useAlertStore();
-      const loadStore = useLoadStore();
-      loadStore.show();
+      
+      useLoadStore.show();
       try {
         await fetchWrapper.delete(`${baseUrl}pessoa/remover/${_user.id}`);
-        alertStore.success(this.sucesso);
+        useAlertStore.success(this.sucesso);
       } catch (error) {
-        const alertStore = useAlertStore();
-        alertStore.error(this.error);
+        useAlertStore.error(this.error);
       }
-      loadStore.close();
+      useLoadStore.close();
     },
     async getById(_id) {
-      const loadStore = useLoadStore();
-      loadStore.show();
-      const alertStore = useAlertStore();
+      useLoadStore.show();
+      
       try {
         const resp = (await fetchWrapper.get(`${baseUrl}pessoa/buscar/${_id}`));
         this.pessoa = resp.object
       } catch (error) {
-        alertStore.error(this.error);
+        useAlertStore.error(this.error);
       }
-      loadStore.close();
+      useLoadStore.close();
     },
     async pesquisar(_param) {
-      const loadStore = useLoadStore();
-      loadStore.show();
-      const alertStore = useAlertStore();
+      useLoadStore.show();
+      
       try {
         this.pessoas = await fetchWrapper.post(`${baseUrl}pessoa/pesquisar/`, {
           nome: _param,
         });
-        alertStore.success(this.sucesso);
+        useAlertStore.success(this.sucesso);
       } catch (error) {
-        alertStore.error(this.error);
+        useAlertStore.error(this.error);
       }
-      loadStore.close();
+      useLoadStore.close();
     },
     async getAll() {
-      const loadStore = useLoadStore();
-      loadStore.show();
-      const alertStore = useAlertStore();
+      useLoadStore.show();
+      
       try {
         this.pessoas = await fetchWrapper.post(`${baseUrl}pessoa/pesquisar`, {
           nome: "",
         });
       } catch (error) {
-        alertStore.error(this.error);
+        useAlertStore.error(this.error);
       }
-      loadStore.close();
+      useLoadStore.close();
     },
     async setPessoa(_pessoa) {
       this.pessoa = _pessoa;
-    },
-    async getFoto(_id) {
-      if(_id && _id > 0){
-      const resp = await fetchWrapper.get(`${baseUrl}foto/download/${_id}`);
-      return resp;
-    }
-    },
-    async salvarFoto(imagem) {
-      const loadStore = useLoadStore();
-      loadStore.show();
-      const alertStore = useAlertStore();
-      try {
-        const resp = await requestFormData(
-          `${baseUrl}foto/upload/${this.pessoa.id}`,
-          imagem
-        );
-        alertStore.success(this.sucesso);
-        return resp;
-      } catch (error) {
-        alertStore.error(this.error);
-      }
-      loadStore.close();
     },
   },
 });

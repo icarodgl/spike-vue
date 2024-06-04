@@ -1,6 +1,6 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { contatoStore } from "@/stores";
+import { contatoStore, useLoadStore } from "@/stores";
 import { RouterLink } from "vue-router";
 import Card from "./../components/card/card.vue";
 const cStore = contatoStore();
@@ -9,8 +9,10 @@ const { favoritos, contatos } = storeToRefs(cStore);
 update();
 
 async function update() {
-  cStore.getAll();
-  cStore.getfavoritos();
+  useLoadStore.show()
+  await cStore.getAll();
+  await cStore.getfavoritos();
+  useLoadStore.close()
 }
 </script>
 

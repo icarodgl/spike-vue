@@ -1,18 +1,14 @@
 <script setup>
-import { storeToRefs } from 'pinia';
-
 import { useAlertStore } from '@/stores';
 
-const alertStore = useAlertStore();
-const { alert } = storeToRefs(alertStore);
 </script>
 
 <template>
-    <div v-if="alert" class="base">
+    <div v-if="useAlertStore.isActive" class="base">
         <div class="m-3">
-            <div class="alert alert-dismissable" :class="alert.type">
-                <button @click="alertStore.clear()" class="btn btn-link close"><i class="bi bi-x-square-fill"></i></button>
-                {{alert.message}}
+            <div class="alert alert-dismissable" :class="useAlertStore.alert.type">
+                <button @click="useAlertStore.clear()" class="btn btn-link close"><i class="bi bi-x-square-fill"></i></button>
+                {{useAlertStore.alert.message}}
             </div>
         </div>
     </div>

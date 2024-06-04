@@ -1,9 +1,7 @@
 import { defineStore } from "pinia";
 import { fetchWrapper } from "@/helpers";
-import { useAuthStore } from "@/stores";
 import { useAlertStore } from "@/stores";
-import {useLoadStore} from "@/stores"
-
+import { useLoadStore } from "@/stores";
 
 const baseUrl = "https://demometaway.vps-kinghost.net:8485/api/";
 
@@ -15,20 +13,23 @@ export const fotoStore = defineStore({
   }),
   actions: {
     async getFoto(_id) {
-      const alertStore = useAlertStore();
-        const resp =  await fetchWrapper.get(`${baseUrl}foto/download/${_id}`)
-        alertStore.success(this.sucesso);
-        return resp
+      const resp = await fetchWrapper.get(`${baseUrl}foto/download/${_id}`);
+      useAlertStore.success(this.sucesso);
+      return resp;
     },
     async salvarFoto(id, imagem) {
-      const alertStore = useAlertStore();
-      try { 
-        const resp = await requestFormData(`${baseUrl}foto/upload/${id}`, imagem)
-        alertStore.success(this.sucesso);
-        return resp
+      useLoadStore.show();
+      try {
+        const resp = await requestFormData(
+          `${baseUrl}foto/upload/${id}`,
+          imagem
+        );
+        useAlertStore.success(this.sucesso);
+        return resp;
       } catch (error) {
-        alertStore.error(this.error);
+        useAlertStore.error(this.error);
       }
+      useLoadStore.close();
     },
   },
 });
