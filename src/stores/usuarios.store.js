@@ -97,35 +97,5 @@ export const pessoasStore = defineStore({
     async setPessoa(_pessoa) {
       this.usuario = _pessoa;
     },
-    async getFoto(_id) {
-      this.isLoading = true;
-      const alertStore = useAlertStore();
-      try { 
-        const resp =  await fetchWrapper.get(`${baseUrl}foto/download/${_id}`)
-        alertStore.success(this.sucesso);
-        return resp
-      } catch (error) {
-        alertStore.error(this.error);
-      }
-      this.isLoading = false;
-    },
-    async salvarFoto(id, imagem) {
-      this.isLoading = true;
-      const alertStore = useAlertStore();
-      try { 
-        const resp = await requestFormData(`${baseUrl}foto/upload/${id}`, imagem)
-        alertStore.success(this.sucesso);
-        return resp
-      } catch (error) {
-        alertStore.error(this.error);
-      }
-      this.isLoading = false;
-    },    async getFoto(_id) {
-      this.isLoading = true;
-        const resp =  await fetchWrapper.get(`${baseUrl}foto/download/${_id}`)
-        this.isLoading = false;
-        return resp
-      
-    },
 },
 });

@@ -93,44 +93,29 @@ export const usuarioStore = defineStore({
         const alertStore = useAlertStore();
         alertStore.error(this.error);
       }
-    },
-    async update(id, params) {
-      const loadStore = useLoadStore();
-       loadStore.show();
+    },    async favoritar(user) {
+      this.isLoading = true;
       const alertStore = useAlertStore();
-
-      await fetchWrapper.put(`${baseUrl}/${id}`, params);
-      alertStore.success(this.sucesso);
-
-      // update stored user if the logged in user updated their own record
-      const authStore = useAuthStore();
-      if (id === authStore.user.id) {
-        // update local storage
-        const user = { ...authStore.user, ...params };
-        localStorage.setItem("user", JSON.stringify(user));
-
-        // update auth user in pinia state
-        authStore.user = user;
+      try {
+        await fetchWrapper.post(`${baseUrl}favorito/salvar`, user);
+        await fetchWrapper.delete(`${baseUrl}contato/remover/${user.id}`);
+        alertStore.success(this.sucesso);
+      } catch (error) {
+        alertStore.error(this.error);
       }
-       loadStore.close();
+      this.isLoading = false;
     },
-    async delete(id) {
-      const loadStore = useLoadStore();
-       loadStore.show();
-      // add isDeleting prop to user being deleted
-      this.users.find((x) => x.id === id).isDeleting = true;
-
-      await fetchWrapper.delete(`${baseUrl}/${id}`);
-
-      // remove user from list after deleted
-      this.users = this.users.filter((x) => x.id !== id);
-
-      // auto logout if the logged in user deleted their own record
-      const authStore = useAuthStore();
-      if (id === authStore.user.id) {
-        authStore.logout();
+    async desfavoritar(user) {
+      this.isLoading = true;
+      const alertStore = useAlertStore();
+      try {
+        await fetchWrapper.post(`${baseUrl}contato/salvar`, user);
+        await fetchWrapper.delete(`${baseUrl}favorito/remover/${user.id}`);
+        alertStore.success(this.sucesso);
+      } catch (error) {
+        alertStore.error(this.error);
       }
-       loadStore.close();
+      this.isLoading = false;
     },
   },
 });
