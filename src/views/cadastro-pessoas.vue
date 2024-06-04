@@ -9,9 +9,10 @@ import ImageUpload from "./../components/forms/image-upload.vue"
 import { useRoute } from 'vue-router';
 import { router } from '@/router';
 import { fotoStore } from "@/stores/foto.store";
+
 const route = useRoute();
 const pStore = pessoasStore()
-const fotoStore = fotoStore()
+const poStore = fotoStore()
 const { pessoa } = storeToRefs(pStore);
 let foto;
 
@@ -25,7 +26,7 @@ await updateFoto()
 
 async function updateFoto() {
   if(pStore.pessoa.id){
-    foto = await fotoStore.getFoto(pStore.pessoa.id)
+    foto = await poStore.getFoto(pStore.pessoa.id)
   }
 }
 const schema = Yup.object().shape({
@@ -42,7 +43,7 @@ async function onSubmit() {
 async function salarImagem(image){
   let formData = new FormData();
   formData.append('foto', image);
-  fotoStore.salvarFoto(pStore.pessoa.id,formData)
+  poStore.salvarFoto(pStore.pessoa.id,formData)
 }
 
 </script>

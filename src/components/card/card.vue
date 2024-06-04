@@ -1,22 +1,22 @@
 <script setup>
 import { router } from '@/router';
-import { usuarioStore } from "@/stores";
+import { contatoStore, fotoStore } from "@/stores";
 
-const usersS = usuarioStore();
-
+const contatoS = contatoStore();
+const pStore = fotoStore()
 const props = defineProps(['user','favorito','pushTo'])
 
 let foto;
 await updateFoto()
 async function updateFoto() {
-    foto = await usersS.getFoto(props.user?.pessoa?.id)
+    foto = await pStore.getFoto(props.user?.pessoa?.id)
 }
 async function favoritar(user){
-  await usersS.favoritar(user)
+  await contatoS.favoritar(user)
   update()
 }
 async function desfavoritar(user){
-   await usersS.desfavoritar(user)
+   await contatoS.desfavoritar(user)
   update()
 }
 
@@ -29,14 +29,14 @@ async function novoContato(){
 }
 
 async function update(){
-    usersS.getAll();
-    usersS.getfavoritos() 
+    contatoS.getAll();
+    contatoS.getfavoritos() 
 }
 async function remover(user){
     if (props.favorito){
-       await usersS.removeFavorito(user)
+       await contatoS.removeFavorito(user)
     }else{
-        await usersS.removeContato(user)
+        await contatoS.removeContato(user)
     }
     update()
 }
