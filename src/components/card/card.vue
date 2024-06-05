@@ -27,8 +27,9 @@ async function desprivar(contato){
     contato.privado = !contato.privado
     await contatoS.updateContato(contato)
 }
-async function editUser(user){
-  router.push({path:`/contato/cadastro/${user.id}`})
+async function editUser(contato){
+    contatoS.contato = props.user
+  router.push({path:`/contato/cadastro/${contato.id}`})
 }
 
 async function update(){

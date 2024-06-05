@@ -6,7 +6,7 @@ defineEmits(["change"]);
 <template>
   <div class="form-group">
     <div class="form-check form-switch">
-      <input class="form-check-input" :value="dado" type="checkbox" @input="$emit('change', $event.target.value)"
+      <input class="form-check-input" type="checkbox" @change="$emit('change', $event.target.checked)"
         role="switch" id="flexSwitchCheckDefault">
       <label class="form-check-label" for="flexSwitchCheckDefault">{{ name }}</label>
     </div>

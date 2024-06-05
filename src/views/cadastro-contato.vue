@@ -10,6 +10,7 @@ import FormGroupSwitch from "@/components/forms/form-group-switch.vue"
 import CardPessoa from "@/components/card/card-pessoa.vue";
 import { useRoute } from 'vue-router';
 import { contatoStore } from "@/stores";
+import { toRaw } from "vue";
 
 const route = useRoute();
 const pStore = pessoasStore()
@@ -26,7 +27,7 @@ const schema = Yup.object().shape({
 if (route.params.id == '0') {
   pStore.novaPessoa()
 } else {
-  pStore.getById(route.params.id)
+  await pStore.getById(cStore.contato.pessoa?.id)
 }
 async function onSubmit() {
   await cStore.salvarContato(pStore.pessoa)
@@ -37,13 +38,13 @@ async function onSubmit() {
 
 <template>
   <div class="container">
-    <RouterLink to="/pessoas" class="voltar"><i class="bi bi-arrow-left"></i>Voltar</RouterLink>
+    <RouterLink to="/home" class="voltar"><i class="bi bi-arrow-left"></i>Voltar</RouterLink>
     <div class="contato">
       <CardPessoa class="contato_card" :pessoa="pessoa"></CardPessoa>
     </div>
     <Form class="formulario" @submit="onSubmit" :validation-schema="schema" v-slot="{ errors, isSubmitting }">
       <div class="basico">
-        <FormGroupSwitch :errors="errors" :dado="contato.privado" @change="(e) => (contato.privado = contato.privado = e)" :name="'Privado'"
+        <FormGroupSwitch :errors="errors" :dado="contato.privado" @change="(e) => contato.privado = e" :name="'Privado'"
         ></FormGroupSwitch>
 
         <FormGroupField :errors="errors" :dado="contato.tag" @change="(e) => (contato.tag = contato.tag = e)" :name="'Tag'">

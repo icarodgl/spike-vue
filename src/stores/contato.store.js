@@ -33,7 +33,7 @@ export const contatoStore = defineStore({
         this.contato.usuario = req.object.usuario;
         this.contato.pessoa = pessoa;
         await fetchWrapper.post(`${baseUrl}contato/salvar`, this.contato);
-        useAlertStore.error(this.sucesso);
+        useAlertStore.success(this.sucesso);
       } catch (error) {
         useAlertStore.error(this.error);
       }
@@ -100,5 +100,18 @@ export const contatoStore = defineStore({
         useAlertStore.error(this.error);
       }
     },
+    async pesquisar(_param) {
+      useLoadStore.show();
+      try {
+        this.contatos = await fetchWrapper.post(`${baseUrl}contato/pesquisar/`, {
+          termo: _param,
+        });
+        useAlertStore.success(this.sucesso);
+      } catch (error) {
+        useAlertStore.error(this.error);
+      }
+      useLoadStore.close();
+    },
   },
+  
 });

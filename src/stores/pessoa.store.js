@@ -103,7 +103,6 @@ export const pessoasStore = defineStore({
     },
     async pesquisar(_param) {
       useLoadStore.show();
-      
       try {
         this.pessoas = await fetchWrapper.post(`${baseUrl}pessoa/pesquisar/`, {
           nome: _param,
